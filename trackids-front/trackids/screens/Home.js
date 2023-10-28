@@ -1,12 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { ImageBackground, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import background from '../assets/background.jpg';
 
-const Home = ({navigation}) => {
-
+const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Button onPress={() => navigation.navigate('Tracklist')} title='Tracklist'></Button>
-      <Button onPress={() => navigation.navigate('Recording')} title='Recording'></Button>
+      <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Recording')}>
+          <Text style={styles.buttonText}>¡GRABEMOS UNA CANCIÓN!</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tracklist')}>
+          <Text style={styles.buttonText}>QUIERO VER MI LIBRERÍA</Text>
+        </TouchableOpacity>
+      </ImageBackground>
     </View>
   );
 };
@@ -16,6 +22,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  bg: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  button: {
+    backgroundColor: '#8ECDDD',
+    borderRadius: 10,
+    padding: 10,
+    margin: 5, // Agrega espacio entre los botones
+    width: 300, // Ajusta el ancho de los botones aquí
+  },
+  buttonText: {
+    /*     fontFamily: 'FugazOne-Regular', */
+    fontSize: 18,
+    color: '#22668D',
+    textAlign: 'center',
   },
 });
 

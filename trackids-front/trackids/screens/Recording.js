@@ -1,87 +1,80 @@
-/* import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Audio } from 'expo-av';
-import * as Sharing from 'expo-sharing';
-
-console.log('recording')
+import background from '../assets/background.jpg';
 
 const Recording = () => {
   const [recording, setRecording] = React.useState();
   const [recordings, setRecordings] = React.useState([]);
-  const [message, setMessage] = React.useState("");
 
   async function startRecording() {
     try {
-      const permission = await Audio.requestPermissionsAsync();
-
-      if (permission.status === "granted") {
+      const perm = await Audio.requestPermissionsAsync();
+      if (perm.status === "granted") {
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: true,
           playsInSilentModeIOS: true
         });
-        
-        const { recording } = await Audio.Recording.createAsync(
-          Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-        );
-
+        const { recording } = await Audio.Recording.createAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
         setRecording(recording);
-      } else {
-        setMessage("Please grant permission to app to access microphone");
       }
-    } catch (err) {
-      console.error('Failed to start recording', err);
-    }
+    } catch (err) { }
   }
 
   async function stopRecording() {
     setRecording(undefined);
-    await recording.stopAndUnloadAsync();
 
-    let updatedRecordings = [...recordings];
+    await recording.stopAndUnloadAsync();
+    let allRecordings = [...recordings];
     const { sound, status } = await recording.createNewLoadedSoundAsync();
-    updatedRecordings.push({
+    allRecordings.push({
       sound: sound,
       duration: getDurationFormatted(status.durationMillis),
       file: recording.getURI()
     });
 
-    setRecordings(updatedRecordings);
+    setRecordings(allRecordings);
   }
 
-  function getDurationFormatted(millis) {
-    const minutes = millis / 1000 / 60;
-    const minutesDisplay = Math.floor(minutes);
-    const seconds = Math.round((minutes - minutesDisplay) * 60);
-    const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
-    return `${minutesDisplay}:${secondsDisplay}`;
+  function getDurationFormatted(milliseconds) {
+    const minutes = milliseconds / 1000 / 60;
+    const seconds = Math.round((minutes - Math.floor(minutes)) * 60);
+    return seconds < 10 ? `${Math.floor(minutes)}:0${seconds}` : `${Math.floor(minutes)}:${seconds}`
   }
 
   function getRecordingLines() {
     return recordings.map((recordingLine, index) => {
       return (
         <View key={index} style={styles.row}>
-          <Text style={styles.fill}>Recording {index + 1} - {recordingLine.duration}</Text>
-          <Button style={styles.button} onPress={() => recordingLine.sound.replayAsync()} title="Play"></Button>
-          <Button style={styles.button} onPress={() => Sharing.shareAsync(recordingLine.file)} title="Share"></Button>
+          <Text style={styles.fill}>
+            Recording #{index + 1} | {recordingLine.duration}
+          </Text>
+          <TouchableOpacity style={styles.button} onPress={() => recordingLine.sound.replayAsync()}>
+            <Text style={styles.buttonText}>PLAY</Text>
+          </TouchableOpacity>
         </View>
       );
     });
   }
 
+  function clearRecordings() {
+    setRecordings([])
+  }
+
   return (
     <View style={styles.container}>
-      <Text>{message}</Text>
-      <Button
-        title={recording ? 'Stop Recording' : 'Start Recording'}
-        onPress={recording ? stopRecording : startRecording} />
-      {getRecordingLines()}
-      <StatusBar style="auto" />
+      <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
+        <TouchableOpacity style={styles.button} onPress={recording ? stopRecording : startRecording}>
+          <Text style={styles.buttonText}>{recording ? 'Stop Recording' : 'Start Recording\n\n\n'}</Text>
+        </TouchableOpacity>
+        {getRecordingLines()}
+        <TouchableOpacity style={styles.button} onPress={clearRecordings}>
+          <Text style={styles.buttonText}>{recordings.length > 0 ? '\n\n\nClear Recordings' : ''}</Text>
+        </TouchableOpacity>
+      </ImageBackground>
     </View>
   );
 }
-
-export default Recording
 
 const styles = StyleSheet.create({
   container: {
@@ -90,36 +83,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  bg: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft: 10,
+    marginRight: 40
   },
   fill: {
     flex: 1,
-    margin: 16
+    margin: 15
   },
   button: {
-    margin: 16
-  }
-}); */
-
-import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-
-const Recording = () => {
-  return (
-    <View style={styles.container}>
-      <Text>Recording</Text>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#8ECDDD',
+    borderRadius: 10,
+    padding: 10,
+    margin: 5,
+    width: 150,
+  },
+  buttonText: {
+    /*     fontFamily: 'FugazOne-Regular', */
+    fontSize: 18,
+    color: '#22668D',
+    textAlign: 'center',
   },
 });
 

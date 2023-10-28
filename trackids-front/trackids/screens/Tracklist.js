@@ -1,49 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, StyleSheet } from 'react-native';
+import { ImageBackground, Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Audio } from 'expo-av';
+import background from '../assets/background.jpg';
 
 const audioFiles = [
-    require('../assets/feelgoodinc/bass.mp3'),
-    require('../assets/feelgoodinc/drums.mp3'),
-    require('../assets/feelgoodinc/other.mp3'),
-    require('../assets/feelgoodinc/vocals.mp3'),
+    require('../assets/tracks/feelgoodinc/bass.mp3'),
+    require('../assets/tracks/feelgoodinc/drums.mp3'),
+    require('../assets/tracks/feelgoodinc/other.mp3'),
+    require('../assets/tracks/feelgoodinc/vocals.mp3'),
 ];
 
+const cover = require('../assets/tracks/demon-days.png');
+
 const Tracklist = () => {
-
-    const [sound, setSound] = useState();
-    const [currentAudioIndex, setCurrentAudioIndex] = useState(0);
-
-    async function loadSound() {
-        if (sound) {
-            await sound.unloadAsync();
-        }
-
-        const { sound } = await Audio.Sound.createAsync(audioFiles[currentAudioIndex]);
-        setSound(sound);
-    }
+    const [sounds, setSounds] = useState([]);
 
     useEffect(() => {
-        loadSound();
-    }, [currentAudioIndex]);
+        const loadSounds = async () => {
+            const loadedSounds = await Promise.all(audioFiles.map(file => Audio.Sound.createAsync(file)));
+            setSounds(loadedSounds);
+        };
 
-    async function playSound() {
-        if (sound) {
-            alert('reproduciendo track '+currentAudioIndex)
-            await sound.playAsync();
-        }
-    }
+        loadSounds();
+    }, []);
 
-    function nextTrack() {
-        if (currentAudioIndex < audioFiles.length - 1) {
-            setCurrentAudioIndex(currentAudioIndex + 1);
+    const playSound = async (index) => {
+        if (sounds[index]) {
+            await sounds[index].sound.playAsync();
         }
-    }
+    };
 
     return (
-        <View>
-            <Button title="Reproducir" onPress={playSound} />
-            <Button title="Siguiente pista" onPress={nextTrack} />
+        <View style={styles.container}>
+            <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
+                <Image source={cover} style={styles.cover} />
+                <Text style={styles.trackName}>Feel Good Inc.</Text>
+                <Text style={styles.artistName}>Gorillaz</Text>
+                <TouchableOpacity style={styles.button} onPress={() => playSound(3)}>
+                    <Text style={styles.buttonText}>VOZ</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => playSound(0)}>
+                    <Text style={styles.buttonText}>BAJO</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => playSound(1)}>
+                    <Text style={styles.buttonText}>BATERÍA</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => playSound(2)}>
+                    <Text style={styles.buttonText}>OTROS</Text>
+                </TouchableOpacity>
+            </ImageBackground>
         </View>
     );
 };
@@ -53,6 +58,43 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    bg: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+    },
+    cover: {
+        width: 200,
+        height: 200,
+        margin: 10,
+    },
+    button: {
+        backgroundColor: '#8ECDDD',
+        borderRadius: 10,
+        padding: 10,
+        margin: 5,
+        width: 300,
+    },
+    buttonText: {
+        /*     fontFamily: 'FugazOne-Regular', */
+        fontSize: 18,
+        color: '#22668D',
+        textAlign: 'center',
+    },
+    trackName: {
+        /*     fontFamily: 'FugazOne-Regular', */
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#000000',
+        textAlign: 'center',
+    },
+    artistName: {
+        /*     fontFamily: 'FugazOne-Regular', */
+        fontSize: 16,
+        color: '#1C1C1C',
+        textAlign: 'center',
     },
 });
 
