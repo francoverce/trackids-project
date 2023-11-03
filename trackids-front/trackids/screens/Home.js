@@ -12,6 +12,9 @@ const Home = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tracklist')}>
           <Text style={styles.buttonText}>QUIERO VER MI LIBRERÍA</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('YouTubeSearch')}>
+          <Text style={styles.buttonText}>QUIERO BUSCAR UNA CANCIÓN</Text>
+        </TouchableOpacity>
       </ImageBackground>
     </View>
   );
