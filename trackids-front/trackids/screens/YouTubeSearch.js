@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ImageBackground, View, StyleSheet, TouchableOpacity, Text, TextInput } from 'react-native';
 import background from '../assets/background.jpg';
-import Tutorial from '../components/Tutorial';
+
 
 const YouTubeSearch = ({ navigation }) => {
 

@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList, Animated } from 'react-native';
 import TutorialItem from "./TutorialItem";
 import slides from "../assets/slides";
 
-export default Tutorial = () => {
+const Tutorial = () => {
     return (
         <View style={styles.container}>
             <FlatList
@@ -20,3 +20,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+
+export default Tutorial; // Exporta el componente de esta manera

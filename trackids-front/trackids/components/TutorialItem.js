@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Image, Text, useWindowDimensions } from 'react-native';
 
-export default TutorialItem = ({ item }) => {
+const TutorialItem = ({ item }) => {
 
     const { width } = useWindowDimensions();
 
@@ -40,3 +40,5 @@ const styles = StyleSheet.create({
         paddingHorizontal: 64,
     },
 });
+
+export default TutorialItem; // Exporta el componente de esta manera

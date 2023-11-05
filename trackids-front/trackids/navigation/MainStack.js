@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from '../screens/Home';
+import Main from '../screens/Main';
+import Login from '../screens/Login';
+import Register from '../screens/Register';
 import Recording from '../screens/Recording';
 import Tracklist from '../screens/Tracklist';
 import YouTubeSearch from '../screens/YouTubeSearch';
@@ -12,7 +15,10 @@ const Stack = createNativeStackNavigator()
 const MainStack = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+                <Stack.Navigator >
+                <Stack.Screen name='Main' component={Main} />
+                <Stack.Screen name='Login' component={Login} />
+                <Stack.Screen name='Register' component={Register} />
                 <Stack.Screen name='Home' component={Home} />
                 <Stack.Screen name='Recording' component={Recording} />
                 <Stack.Screen name='Tracklist' component={Tracklist} />
