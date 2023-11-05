@@ -7,13 +7,14 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleRegister = () => {
-    // Aquí puedes agregar la lógica de registro, como una llamada a una API o registro local.
+
+    //llamado a la api para registro
 
     if (email && password && confirmPassword === password) {
-      // Lógica de registro exitoso
+    
       alert('Registro exitoso');
     } else {
-      // Lógica de registro fallido
+      
       alert('Error en el registro. Verifica tus datos.');
     }
   };

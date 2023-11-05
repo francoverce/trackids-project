@@ -36,11 +36,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#8ECDDD',
     borderRadius: 10,
     padding: 10,
-    margin: 5, // Agrega espacio entre los botones
-    width: 300, // Ajusta el ancho de los botones aquí
+    margin: 5, 
+    width: 300, 
   },
   buttonText: {
-    /*     fontFamily: 'FugazOne-Regular', */
+
     fontSize: 18,
     color: '#22668D',
     textAlign: 'center',

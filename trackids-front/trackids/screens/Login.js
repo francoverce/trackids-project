@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Aquí puedes agregar la lógica de autenticación, como una llamada a una API o autenticación local.
+  
+    // acá poner llamado a la api para login
 
     if (email && password) {
-      // Lógica de autenticación exitosa
+
       alert('Inicio de sesión exitoso');
+      navigation.navigate('Home')
     } else {
-      // Lógica de autenticación fallida
+      
       alert('Error en el inicio de sesión. Verifica tus credenciales.');
     }
   };
