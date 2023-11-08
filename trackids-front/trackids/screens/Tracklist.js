@@ -20,15 +20,15 @@ const Tracklist = () => {
     const soundObjects = useRef([]);
     const [volumeValues, setVolumeValues] = useState([50, 50, 50, 50]);
 
+    const loadSounds = async () => {
+        const loadedSounds = await Promise.all(audioFiles.map(file => Audio.Sound.createAsync(file)));
+        setSounds(loadedSounds);
+
+        // Guardar las referencias a las pistas de audio en soundObjects.current
+        soundObjects.current = loadedSounds.map(sound => sound.sound);
+    };
+
     useEffect(() => {
-        const loadSounds = async () => {
-            const loadedSounds = await Promise.all(audioFiles.map(file => Audio.Sound.createAsync(file)));
-            setSounds(loadedSounds);
-
-            // Guardar las referencias a las pistas de audio en soundObjects.current
-            soundObjects.current = loadedSounds.map(sound => sound.sound);
-        };
-
         loadSounds();
     }, []);
 
@@ -70,6 +70,7 @@ const Tracklist = () => {
 
         if (status.didJustFinish) {
             setIsPlaying(false); // Cambiar el estado de reproducción
+            loadSounds();
         }
     };
 
