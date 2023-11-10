@@ -22,7 +22,8 @@
     "react-native-elements": "^3.4.3",
     "react-native-vector-icons": "^10.0.1",
     "react-native-volume-slider": "^0.5.1",
-    "react-native-web": "^0.19.9"
+    "react-native-web": "^0.19.9",
+    "react-native-webview": "^13.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

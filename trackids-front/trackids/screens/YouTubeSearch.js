@@ -1,13 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ImageBackground, View, StyleSheet, TouchableOpacity, Text, TextInput } from 'react-native';
-import background from '../assets/background.jpg';
-
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ImageBackground, View, StyleSheet, TouchableOpacity, Text, TextInput, Linking, Button } from 'react-native';
+import background from '../assets/background2.jpg';
+import Constants from 'expo-constants';
 
 const YouTubeSearch = ({ navigation }) => {
 
     const inputUrlRef = useRef();
     const [text, onChangeText] = React.useState('https://www.youtube.com/watch?v=1Sul2b0Uf7Y');
     const idVideo = youtube_parser(text);
+    const rapidKey = '09baaeda1cmsh701b9c278e4f8efp14d149jsn6689f5697ac7';
+    const rapidHost = 'youtube-mp36.p.rapidapi.com';
+
+    const [songName, setSongName] = useState('');
+    const [songUrl, setSongUrl] = useState('');
+    const [allowDownload, setAllowDownload] = useState(false);
 
     function youtube_parser(url) {
         var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
@@ -20,22 +26,50 @@ const YouTubeSearch = ({ navigation }) => {
         const options = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': '09baaeda1cmsh701b9c278e4f8efp14d149jsn6689f5697ac7',
-                'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com'
+                'X-RapidAPI-Key': rapidKey,
+                'X-RapidAPI-Host': rapidHost
             }
         };
 
         try {
             const response = await fetch(url, options);
-            const result = await response.text();
-            console.log(result);
+            const resultText = await response.text();
+            const result = JSON.parse(resultText);
+            setSongName(result.title);
+            setSongUrl(result.link);
+            setAllowDownload(true);
         } catch (error) {
             console.error(error);
+            setAllowDownload(false);
         }
     }
 
+    const OpenURLButton = ({ url, children }) => {
+        const handlePress = useCallback(async () => {
+            // Checking if the link is supported for links with custom URL scheme.
+            const supported = await Linking.canOpenURL(url);
+
+            if (supported) {
+                // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+                // by some browser in the mobile
+                await Linking.openURL(url);
+            } else {
+                Alert.alert(`Don't know how to open this URL: ${url}`);
+            }
+        }, [url]);
+
+        return (
+            <TouchableOpacity
+                onPress={handlePress}
+                style={styles.button}
+            >
+                <Text style={styles.buttonText}>{children}</Text>
+            </TouchableOpacity>
+        );
+    };
+
     return (
-        <View>
+        <View style={styles.container}>
             <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
                 <View style={styles.topContainer}>
                     <TextInput
@@ -49,6 +83,12 @@ const YouTubeSearch = ({ navigation }) => {
                         <Text style={styles.helpButtonText}>?</Text>
                     </TouchableOpacity>
                 </View>
+                {songName && songUrl && (
+                    <View style={styles.downloadInfo}>
+                        <Text style={styles.trackName}>{songName}</Text>
+                        <OpenURLButton url={songUrl}>Descargar</OpenURLButton>
+                    </View>
+                )}
                 <View style={styles.bottomContainer}>
                     <Text style={styles.tipText}>
                         Importá tu canción favorita directamente desde YouTube!
@@ -63,6 +103,11 @@ const YouTubeSearch = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     bg: {
         width: '100%',
         height: '100%',
@@ -72,6 +117,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'flex-start',
+        marginTop: Constants.statusBarHeight,
     },
     input: {
         backgroundColor: '#FFFFFF',
@@ -83,39 +129,53 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     helpButton: {
-        backgroundColor: '#22668D',
+        backgroundColor: 'blue',
         borderRadius: 20,
         padding: 10,
         margin: 10, // Agrega espacio entre los botones
         width: 50, // Ajusta el ancho de los botones aquí
     },
-    button: {
-        backgroundColor: '#8ECDDD',
-        borderRadius: 10,
-        padding: 10,
-        margin: 10, // Agrega espacio entre los botones
-        width: 300, // Ajusta el ancho de los botones aquí
-    },
     helpButtonText: {
         /*     fontFamily: 'FugazOne-Regular', */
         fontSize: 18,
-        color: '#8ECDDD',
+        color: 'white',
         textAlign: 'center',
         fontWeight: 'bold',
+    },
+    downloadInfo: {
+        display: 'flex',
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    button: {
+        backgroundColor: 'green',
+        borderRadius: 10,
+        padding: 10,
+        margin: 10, // Agrega espacio entre los botones
+        width: 150, // Ajusta el ancho de los botones aquí
     },
     buttonText: {
         /*     fontFamily: 'FugazOne-Regular', */
         fontSize: 18,
-        color: '#22668D',
+        color: 'white',
         textAlign: 'center',
+    },
+    trackName: {
+        /*     fontFamily: 'FugazOne-Regular', */
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#000000',
+        textAlign: 'left',
     },
     bottomContainer: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center',
         marginTop: 'auto',
-        marginBottom: '100',
+        height: 80,
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
     },
     tipText: {
         /*     fontFamily: 'FugazOne-Regular', */

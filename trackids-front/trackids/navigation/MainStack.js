@@ -6,6 +6,7 @@ import Main from '../screens/Main';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
 import Recording from '../screens/Recording';
+import Library from '../screens/Library';
 import Tracklist from '../screens/Tracklist';
 import YouTubeSearch from '../screens/YouTubeSearch';
 import YouTubeTutorial from '../screens/YouTubeTutorial';
@@ -15,12 +16,13 @@ const Stack = createNativeStackNavigator()
 const MainStack = () => {
     return (
         <NavigationContainer>
-                <Stack.Navigator >
+                <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name='Main' component={Main} />
                 <Stack.Screen name='Login' component={Login} />
                 <Stack.Screen name='Register' component={Register} />
                 <Stack.Screen name='Home' component={Home} />
                 <Stack.Screen name='Recording' component={Recording} />
+                <Stack.Screen name='Library' component={Library} />
                 <Stack.Screen name='Tracklist' component={Tracklist} />
                 <Stack.Screen name='YouTubeSearch' component={YouTubeSearch} />
                 <Stack.Screen name='YouTubeTutorial' component={YouTubeTutorial} />

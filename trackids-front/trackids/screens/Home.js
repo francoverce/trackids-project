@@ -9,7 +9,7 @@ const Home = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Recording')}>
           <Text style={styles.buttonText}>¡GRABEMOS UNA CANCIÓN!</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tracklist')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Library')}>
           <Text style={styles.buttonText}>QUIERO VER MI LIBRERÍA</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('YouTubeSearch')}>
