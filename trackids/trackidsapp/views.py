@@ -1,13 +1,21 @@
 from django.shortcuts import render
 
-# Create your views here.
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
+from rest_framework import generics
+from .models import AudioFile
+from .serializers import AudioFileSerializer
+
 import demucs.separate
+
+import os
+from django.http import JsonResponse
 
 def home(request):
     return JsonResponse({'message': 'Bienvenido a la aplicación de separación de audio'}, status=200)
 
+"""SEPARAR AUDIO EN PISTAS"""
 @csrf_exempt
 def separate_audio(request):
     if request.method == 'POST':
@@ -19,9 +27,8 @@ def separate_audio(request):
     else:
         return JsonResponse({'error': 'Método no permitido'}, status=405)
 
-import os
-from django.http import JsonResponse
 
+"""RECUPERAR AUDIO SEPARADO"""
 def view_separated_audio(request):
     # Define la ruta al directorio donde se almacenan las pistas separadas
     separated_audio_dir = '***PATH_OUTPUT***'
@@ -32,4 +39,12 @@ def view_separated_audio(request):
     # Devuelve la lista de archivos como una respuesta JSON
     return JsonResponse({'separated_audio_files': separated_audio_files})
 
+"""GUARDAR ARCHIVO DE AUDIO"""
+class AudioFileListCreateView(generics.ListCreateAPIView):
+    queryset = AudioFile.objects.all()
+    serializer_class = AudioFileSerializer
 
+"""RECUPERAR ARCHIVO DE AUDIO"""
+class AudioFileRetrieveView(generics.RetrieveAPIView):
+    queryset = AudioFile.objects.all()
+    serializer_class = AudioFileSerializer
