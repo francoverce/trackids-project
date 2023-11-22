@@ -2,8 +2,10 @@ import React from 'react';
 import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Audio } from 'expo-av';
 import background from '../assets/background.jpg';
+import NavButton from '../components/NavButton';
+import Constants from 'expo-constants';
 
-const Recording = () => {
+const Recording = ({ navigation }) => {
   const [recording, setRecording] = React.useState();
   const [recordings, setRecordings] = React.useState([]);
 
@@ -71,6 +73,7 @@ const Recording = () => {
         <TouchableOpacity style={styles.button} onPress={clearRecordings}>
           <Text style={styles.buttonText}>{recordings.length > 0 ? '\n\n\nClear Recordings' : ''}</Text>
         </TouchableOpacity>
+        <NavButton navigation={navigation} />
       </ImageBackground>
     </View>
   );
@@ -85,9 +88,10 @@ const styles = StyleSheet.create({
   },
   bg: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     width: '100%',
+    marginBottom: Constants.statusBarHeight*2,
   },
   row: {
     flexDirection: 'row',

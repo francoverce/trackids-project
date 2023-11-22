@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ImageBackground, View, StyleSheet, TouchableOpacity, Text, TextInput, Linking, Button } from 'react-native';
 import background from '../assets/background2.jpg';
 import Constants from 'expo-constants';
+import NavButton from '../components/NavButton';
 
 const YouTubeSearch = ({ navigation }) => {
 
@@ -97,6 +98,7 @@ const YouTubeSearch = ({ navigation }) => {
                         Si tenés dudas, presióná el boton de "?" arriba a la derecha
                     </Text>
                 </View>
+                <NavButton navigation={navigation} />
             </ImageBackground>
         </View>
     );
@@ -107,10 +109,13 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: Constants.statusBarHeight*2,
     },
     bg: {
         width: '100%',
         height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     topContainer: {
         display: 'flex',
@@ -175,6 +180,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 'auto',
         height: 80,
+        width: '100%',
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
     },
     tipText: {

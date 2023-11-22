@@ -194,3 +194,47 @@ const styles = StyleSheet.create({
 });
 
 export default Tracklist;
+
+/* import RNFetchBlob from 'react-native-fetch-blob';
+
+const uploadAudio = async (audioData) => {
+  const formData = new FormData();
+  formData.append('audio', {
+    uri: audioData.uri,
+    type: 'audio/mp3',
+    name: 'audio.mp3',
+  });
+
+  try {
+    const response = await fetch('http://tu-backend.com/audio/', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    if (response.ok) {
+      console.log('Archivo de audio subido con éxito.');
+    } else {
+      console.error('Error al subir el archivo de audio.');
+    }
+  } catch (error) {
+    console.error('Error de red:', error);
+  }
+};
+
+import { RNFetchBlob } from 'react-native-fetch-blob';
+
+const downloadAudio = async (audioId) => {
+  try {
+    const response = await RNFetchBlob.config({
+      fileCache: true,
+    }).fetch('GET', `http://tu-backend.com/audio/${audioId}/`);
+
+    // Usa la respuesta como sea necesario (por ejemplo, reproducir el audio).
+    console.log('Archivo de audio descargado con éxito:', response.path());
+  } catch (error) {
+    console.error('Error al descargar el archivo de audio:', error);
+  }
+}; */
