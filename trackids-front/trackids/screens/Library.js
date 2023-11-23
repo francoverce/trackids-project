@@ -5,6 +5,39 @@ import Constants from 'expo-constants';
 import NavButton from '../components/NavButton';
 
 const Library = ({ navigation }) => {
+
+  const feelgoodinc = {
+    id: 'feelgoodinc',
+    title: 'Feel Good Inc.',
+    artist: 'Gorillaz',
+    info: 'Esta canción fue grabada en bla bla bla por bla bla'
+  }
+
+  const audioFiles = {
+    feelgoodinc: [
+      require('../assets/tracks/feelgoodinc/bass.mp3'),
+      require('../assets/tracks/feelgoodinc/drums.mp3'),
+      require('../assets/tracks/feelgoodinc/other.mp3'),
+      require('../assets/tracks/feelgoodinc/vocals.mp3'),
+    ],
+    // Otras canciones...
+  };
+
+  const covers = {
+    feelgoodinc: [
+      require('../assets/tracks/feelgoodinc/cover.png')
+    ],
+    // Otras canciones...
+  }
+
+  const toTracklist = (songSelected) => {
+    navigation.navigate('Tracklist', {
+      song: songSelected,
+      audioFiles: audioFiles[songSelected.id],
+      cover: covers[songSelected.id][0],
+    });
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
@@ -18,37 +51,37 @@ const Library = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={styles.row}>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tracklist')}>
-              <Image style={styles.cover} source={require('../assets/tracks/demon-days.png')} />
+            <TouchableOpacity style={styles.button} onPress={() => toTracklist(feelgoodinc)}>
+              <Image style={styles.cover} source={require('../assets/tracks/feelgoodinc/cover.png')} />
               <Text style={styles.titleText}>Feel Good Inc.</Text>
               <Text style={styles.artistText}>Gorillaz</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tracklist')}>
-              <Image style={styles.cover} source={require('../assets/tracks/demon-days.png')} />
-              <Text style={styles.titleText}>Feel Good Inc.</Text>
-              <Text style={styles.artistText}>Gorillaz</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.row}>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tracklist')}>
-              <Image style={styles.cover} source={require('../assets/tracks/demon-days.png')} />
-              <Text style={styles.titleText}>Feel Good Inc.</Text>
-              <Text style={styles.artistText}>Gorillaz</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tracklist')}>
-              <Image style={styles.cover} source={require('../assets/tracks/demon-days.png')} />
+            <TouchableOpacity style={styles.button} onPress={() => toTracklist(feelgoodinc)}>
+              <Image style={styles.cover} source={require('../assets/tracks/feelgoodinc/cover.png')} />
               <Text style={styles.titleText}>Feel Good Inc.</Text>
               <Text style={styles.artistText}>Gorillaz</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.row}>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tracklist')}>
-              <Image style={styles.cover} source={require('../assets/tracks/demon-days.png')} />
+            <TouchableOpacity style={styles.button} onPress={() => toTracklist(feelgoodinc)}>
+              <Image style={styles.cover} source={require('../assets/tracks/feelgoodinc/cover.png')} />
               <Text style={styles.titleText}>Feel Good Inc.</Text>
               <Text style={styles.artistText}>Gorillaz</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tracklist')}>
-              <Image style={styles.cover} source={require('../assets/tracks/demon-days.png')} />
+            <TouchableOpacity style={styles.button} onPress={() => toTracklist(feelgoodinc)}>
+              <Image style={styles.cover} source={require('../assets/tracks/feelgoodinc/cover.png')} />
+              <Text style={styles.titleText}>Feel Good Inc.</Text>
+              <Text style={styles.artistText}>Gorillaz</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.row}>
+            <TouchableOpacity style={styles.button} onPress={() => toTracklist(feelgoodinc)}>
+              <Image style={styles.cover} source={require('../assets/tracks/feelgoodinc/cover.png')} />
+              <Text style={styles.titleText}>Feel Good Inc.</Text>
+              <Text style={styles.artistText}>Gorillaz</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => toTracklist(feelgoodinc)}>
+              <Image style={styles.cover} source={require('../assets/tracks/feelgoodinc/cover.png')} />
               <Text style={styles.titleText}>Feel Good Inc.</Text>
               <Text style={styles.artistText}>Gorillaz</Text>
             </TouchableOpacity>

@@ -4,21 +4,19 @@ import Slider from "react-native-a11y-slider";
 import { Audio } from 'expo-av';
 import background from '../assets/background.jpg';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Modal from 'react-native-modal';
+import { Dimensions } from "react-native";
+import Constants from 'expo-constants';
 
-const audioFiles = [
-    require('../assets/tracks/feelgoodinc/bass.mp3'),
-    require('../assets/tracks/feelgoodinc/drums.mp3'),
-    require('../assets/tracks/feelgoodinc/other.mp3'),
-    require('../assets/tracks/feelgoodinc/vocals.mp3'),
-];
+const Tracklist = ({ route, navigation }) => {
+    const { song, audioFiles, cover } = route.params;
 
-const cover = require('../assets/tracks/demon-days.png');
-
-const Tracklist = () => {
     const [sounds, setSounds] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
     const soundObjects = useRef([]);
     const [volumeValues, setVolumeValues] = useState([50, 50, 50, 50]);
+
+    const [IsModalVisible, setIsModalVisible] = useState(false);
 
     const loadSounds = async () => {
         const loadedSounds = await Promise.all(audioFiles.map(file => Audio.Sound.createAsync(file)));
@@ -79,7 +77,7 @@ const Tracklist = () => {
         const sound = soundObjects.current[index]; // Obtener la referencia al objeto de sonido específico
 
         if (sound) {
-            await sound.setVolumeAsync(value/100); // Establecer el volumen para la pista de audio específica
+            await sound.setVolumeAsync(value / 100); // Establecer el volumen para la pista de audio específica
             const newVolumeValues = [...volumeValues];
             newVolumeValues[index] = value;
             setVolumeValues(newVolumeValues);
@@ -101,14 +99,26 @@ const Tracklist = () => {
         };
     }, []); // Vacío, para que se ejecute solo una vez al montar el componente
 
+    const mostrarModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const cerrarModal = () => {
+        setIsModalVisible(false);
+    };
+
     return (
         <View style={styles.container}>
             <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
+                <View style={styles.topContainer}>
+                    <Icon name='arrow-left' size={30} onPress={() => navigation.navigate('Library')} />
+                    <Icon name='info-circle' size={30} color='blue' onPress={() => mostrarModal()} />
+                </View>
                 <View style={styles.coverContainer}>
                     <Image source={cover} style={styles.cover} />
                     <View style={styles.titleContainer}>
-                        <Text style={styles.trackName}>Feel Good Inc.</Text>
-                        <Text style={styles.artistName}>Gorillaz</Text>
+                        <Text style={styles.trackName}>{song.title}</Text>
+                        <Text style={styles.artistName}>{song.artist}</Text>
                         <Icon
                             name={isPlaying ? 'pause-circle' : 'play-circle'}
                             size={60}
@@ -130,6 +140,11 @@ const Tracklist = () => {
                         <Icon name='volume-up' size={30} color='black' />
                     </View>
                 ))}
+                <Modal style={{ alignItems: 'center' }} isVisible={IsModalVisible} onBackdropPress={() => cerrarModal()}>
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.modalText}>{song.info}</Text>
+                    </View>
+                </Modal>
             </ImageBackground>
         </View>
     );
@@ -140,12 +155,20 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+
     },
     bg: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         width: '100%',
+        
+    },
+    topContainer: {
+        marginTop: Constants.statusBarHeight,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: Dimensions.get("window").width - 50,
     },
     coverContainer: {
         flexDirection: 'row',
@@ -162,6 +185,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginHorizontal: 50,
+        marginTop: 20,
     },
     button: {
         backgroundColor: '#8ECDDD',
@@ -190,6 +214,23 @@ const styles = StyleSheet.create({
         color: '#1C1C1C',
         textAlign: 'center',
         textAlign: 'left',
+    },
+    modalText: {
+        fontSize: 20,
+        textAlign: "center",
+        color: 'black', // Puedes ajustar el color del texto
+        lineHeight: 24, // Puedes ajustar el espaciado entre líneas
+    },
+    modalContainer: {
+        padding: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderColor: '#6372ff',
+        borderWidth: 5,
+        borderRadius: 30,
+        width: Dimensions.get("window").width - 50,
+        height: Dimensions.get("window").width - 50,
     },
 });
 
