@@ -1,22 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import { useFonts } from 'expo-font';
 
 const Main = ({ navigation }) => {
 
+  const [fontLoaded] = useFonts({
+    FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
+  });
 
-    const Login = () => {
-        navigation.navigate('Login')
-    }
+  const Login = () => {
+    navigation.navigate('Login')
+  }
 
-    const Register = () => {
-        navigation.navigate('Register')
-    }
+  const Register = () => {
+    navigation.navigate('Register')
+  }
 
   return (
     <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.imageBackground}>
       <View style={styles.container}>
         <View style={styles.card}>
-          <Text style={styles.headingText}>Bienvenido</Text>
+          <Text style={styles.headingText}>BIENVENIDO</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={Login}>
               <Text style={styles.buttonText}>Iniciar sesión</Text>
@@ -59,10 +63,10 @@ const styles = StyleSheet.create({
     fontSize: 35,
     marginBottom: 20,
     color: '#000000',
-    fontWeight: 'bold',
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 4,
+    fontFamily: 'FugazOne'
   },
   buttonContainer: {
     marginTop: 20,

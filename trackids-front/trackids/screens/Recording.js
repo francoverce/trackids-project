@@ -4,8 +4,14 @@ import { Audio } from 'expo-av';
 import background from '../assets/background.jpg';
 import NavButton from '../components/NavButton';
 import Constants from 'expo-constants';
+import { useFonts } from 'expo-font';
 
 const Recording = ({ navigation }) => {
+
+  const [fontLoaded] = useFonts({
+    FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
+  });
+
   const [recording, setRecording] = React.useState();
   const [recordings, setRecordings] = React.useState([]);
 
@@ -66,13 +72,16 @@ const Recording = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
-        <TouchableOpacity style={styles.button} onPress={recording ? stopRecording : startRecording}>
-          <Text style={styles.buttonText}>{recording ? 'Stop Recording' : 'Start Recording\n\n\n'}</Text>
-        </TouchableOpacity>
-        {getRecordingLines()}
-        <TouchableOpacity style={styles.button} onPress={clearRecordings}>
-          <Text style={styles.buttonText}>{recordings.length > 0 ? '\n\n\nClear Recordings' : ''}</Text>
-        </TouchableOpacity>
+      <Text style={styles.header}>GRABACIÓN</Text>
+        <View style={styles.container}>
+          <TouchableOpacity style={styles.button} onPress={recording ? stopRecording : startRecording}>
+            <Text style={styles.buttonText}>{recording ? 'PARAR GRABACIÓN' : 'INICIAR GRABACIÓN\n\n\n'}</Text>
+          </TouchableOpacity>
+          {getRecordingLines()}
+          <TouchableOpacity style={styles.button} onPress={clearRecordings}>
+            <Text style={styles.buttonText}>{recordings.length > 0 ? '\n\n\nClear Recordings' : ''}</Text>
+          </TouchableOpacity>
+        </View>
         <NavButton navigation={navigation} />
       </ImageBackground>
     </View>
@@ -82,7 +91,6 @@ const Recording = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -91,7 +99,17 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     width: '100%',
-    marginBottom: Constants.statusBarHeight*2,
+    marginBottom: Constants.statusBarHeight * 2,
+  },
+  header: {
+    fontSize: 22,
+    fontFamily: 'FugazOne',
+    color: 'black',
+    textAlign: 'center',
+    marginTop: Constants.statusBarHeight,
+    borderBottomWidth: 5,
+    borderBottomColor: 'black',
+    width: '100%',
   },
   row: {
     flexDirection: 'row',
@@ -105,16 +123,16 @@ const styles = StyleSheet.create({
     margin: 15
   },
   button: {
-    backgroundColor: '#8ECDDD',
+    backgroundColor: '#FFB633',
     borderRadius: 10,
     padding: 10,
     margin: 5,
     width: 150,
   },
   buttonText: {
-    /*     fontFamily: 'FugazOne-Regular', */
+    fontFamily: 'FugazOne',
     fontSize: 18,
-    color: '#22668D',
+    color: 'black',
     textAlign: 'center',
   },
 });

@@ -3,8 +3,13 @@ import { ImageBackground, ScrollView, View, StyleSheet, TouchableOpacity, Text, 
 import background from '../assets/background3.jpg';
 import Constants from 'expo-constants';
 import NavButton from '../components/NavButton';
+import { useFonts } from 'expo-font';
 
 const Library = ({ navigation }) => {
+
+  const [fontLoaded] = useFonts({
+    FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
+  });
 
   const feelgoodinc = {
     id: 'feelgoodinc',
@@ -41,6 +46,7 @@ const Library = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
+        <Text style={styles.header}>MI LIBRERÍA</Text>
         <View style={styles.container}>
           <View style={styles.menu}>
             <TouchableOpacity style={styles.menuButton}>
@@ -98,12 +104,22 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   container: {
-    marginTop: Constants.statusBarHeight,
+    justifyContent: 'flex-start',
   },
   bg: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+  },
+  header: {
+    fontSize: 22,
+    fontFamily: 'FugazOne',
+    color: 'black',
+    textAlign: 'center',
+    borderBottomWidth: 5,
+    borderBottomColor: 'black',
+    width: '100%',
+    marginTop: Constants.statusBarHeight,
   },
   menu: {
     flexDirection: 'row',
@@ -139,13 +155,13 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'FugazOne',
     color: 'black',
     textAlign: 'center',
   },
   artistText: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'FugazOne',
     color: '#4A4A4A',
     textAlign: 'center',
   },

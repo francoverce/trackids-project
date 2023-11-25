@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/fugaz-one": "^0.2.3",
     "@expo/webpack-config": "^19.0.0",
     "@react-navigation/native-stack": "^6.9.15",
     "axios": "^1.6.2",

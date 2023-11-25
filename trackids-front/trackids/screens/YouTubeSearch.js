@@ -2,9 +2,16 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ImageBackground, View, StyleSheet, TouchableOpacity, Text, TextInput, Linking, Button } from 'react-native';
 import background from '../assets/background2.jpg';
 import Constants from 'expo-constants';
+import { Dimensions } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
 import NavButton from '../components/NavButton';
+import { useFonts } from 'expo-font';
 
 const YouTubeSearch = ({ navigation }) => {
+
+    const [fontLoaded] = useFonts({
+        FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
+    });
 
     const inputUrlRef = useRef();
     const [text, onChangeText] = React.useState('https://www.youtube.com/watch?v=1Sul2b0Uf7Y');
@@ -72,6 +79,7 @@ const YouTubeSearch = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
+                <Text style={styles.header}>IMPORTACIÓN DE YOUTUBE</Text>
                 <View style={styles.topContainer}>
                     <TextInput
                         style={styles.input}
@@ -80,9 +88,7 @@ const YouTubeSearch = ({ navigation }) => {
                         placeholder="URL de YouTube"
                         onSubmitEditing={() => handleSearchSubmit()}
                     />
-                    <TouchableOpacity style={styles.helpButton} onPress={() => navigation.navigate('YouTubeTutorial')}>
-                        <Text style={styles.helpButtonText}>?</Text>
-                    </TouchableOpacity>
+                    <Icon name='question-circle' size={40} color='blue' onPress={() => navigation.navigate('YouTubeTutorial')} />
                 </View>
                 {songName && songUrl && (
                     <View style={styles.downloadInfo}>
@@ -92,10 +98,10 @@ const YouTubeSearch = ({ navigation }) => {
                 )}
                 <View style={styles.bottomContainer}>
                     <Text style={styles.tipText}>
-                        Importá tu canción favorita directamente desde YouTube!
+                        IMPORTÁ TU CANCIÓN FAVORITA DESDE YOUTUBE!
                     </Text>
                     <Text style={styles.tipText}>
-                        Si tenés dudas, presióná el boton de "?" arriba a la derecha
+                        SI TENÉS DUDAS, PRESIONÁ EL BOTÓN DE "?" AZUL
                     </Text>
                 </View>
                 <NavButton navigation={navigation} />
@@ -109,7 +115,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: Constants.statusBarHeight*2,
+        marginBottom: Constants.statusBarHeight * 2,
     },
     bg: {
         width: '100%',
@@ -117,12 +123,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    header: {
+        fontSize: 22,
+        fontFamily: 'FugazOne',
+        color: 'black',
+        textAlign: 'center',
+        marginTop: Constants.statusBarHeight,
+        borderBottomWidth: 5,
+        borderBottomColor: 'black',
+        width: '100%',
+    },
     topContainer: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'flex-start',
-        marginTop: Constants.statusBarHeight,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: Dimensions.get("window").width - 30,
     },
     input: {
         backgroundColor: '#FFFFFF',
@@ -137,11 +153,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'blue',
         borderRadius: 20,
         padding: 10,
-        margin: 10, // Agrega espacio entre los botones
-        width: 50, // Ajusta el ancho de los botones aquí
+        margin: 10,
+        width: 50,
     },
     helpButtonText: {
-        /*     fontFamily: 'FugazOne-Regular', */
         fontSize: 18,
         color: 'white',
         textAlign: 'center',
@@ -157,20 +172,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'green',
         borderRadius: 10,
         padding: 10,
-        margin: 10, // Agrega espacio entre los botones
-        width: 150, // Ajusta el ancho de los botones aquí
+        margin: 10,
+        width: 150,
     },
     buttonText: {
-        /*     fontFamily: 'FugazOne-Regular', */
+        fontFamily: 'FugazOne',
+        color: 'black',
         fontSize: 18,
-        color: 'white',
         textAlign: 'center',
     },
     trackName: {
-        /*     fontFamily: 'FugazOne-Regular', */
+        fontFamily: 'FugazOne',
+        color: 'black',
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#000000',
         textAlign: 'left',
     },
     bottomContainer: {
@@ -184,11 +199,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
     },
     tipText: {
-        /*     fontFamily: 'FugazOne-Regular', */
+        fontFamily: 'FugazOne',
+        color: 'black',
         fontSize: 14,
-        fontWeight: 'bold',
-        color: '#000000',
         textAlign: 'center',
+        marginHorizontal: 10,
     },
 });
 
