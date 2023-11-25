@@ -20,10 +20,10 @@ const Library = ({ navigation }) => {
 
   const audioFiles = {
     feelgoodinc: [
-      require('../assets/tracks/feelgoodinc/bass.mp3'),
-      require('../assets/tracks/feelgoodinc/drums.mp3'),
-      require('../assets/tracks/feelgoodinc/other.mp3'),
       require('../assets/tracks/feelgoodinc/vocals.mp3'),
+      require('../assets/tracks/feelgoodinc/drums.mp3'),
+      require('../assets/tracks/feelgoodinc/bass.mp3'),  
+      require('../assets/tracks/feelgoodinc/other.mp3'),
     ],
     // Otras canciones...
   };

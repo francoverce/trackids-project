@@ -8,15 +8,15 @@ const NavButton = ({ navigation }) => {
     return (
         <View style={style.view}>
             <TouchableOpacity onPress={() => navigation.navigate('YouTubeSearch')}>
-                <Icon name='youtube-play' size={40}/>
+                <Icon name='youtube-play' size={40} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('Recording')}>
-                <Icon name='microphone' size={40}/>
+                <Icon name='microphone' size={40} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('Library')}>
-                <Icon name='folder' size={40}/>
+                <Icon name='folder' size={40} />
             </TouchableOpacity>
         </View>
     )
@@ -31,7 +31,7 @@ const style = StyleSheet.create({
         padding: 5,
         marginTop: 5,
         marginBottom: -30,
-        backgroundColor: 'white',
+        backgroundColor: '#FFCC70',
         borderRadius: 45,
         borderColor: 'black',
         borderWidth: 3

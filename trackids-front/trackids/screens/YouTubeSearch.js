@@ -93,7 +93,7 @@ const YouTubeSearch = ({ navigation }) => {
                 {songName && songUrl && (
                     <View style={styles.downloadInfo}>
                         <Text style={styles.trackName}>{songName}</Text>
-                        <OpenURLButton url={songUrl}>Descargar</OpenURLButton>
+                        <OpenURLButton url={songUrl}>DESCARGAR</OpenURLButton>
                     </View>
                 )}
                 <View style={styles.bottomContainer}>
@@ -185,7 +185,6 @@ const styles = StyleSheet.create({
         fontFamily: 'FugazOne',
         color: 'black',
         fontSize: 18,
-        fontWeight: 'bold',
         textAlign: 'left',
     },
     bottomContainer: {
