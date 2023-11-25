@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 36,
     fontFamily: 'FugazOne',
-    color: 'black',
+    color: '#22668D',
     textAlign: 'center',
     marginTop: Constants.statusBarHeight,
     borderBottomWidth: 8,
-    borderBottomColor: 'black',
+    borderBottomColor: '#22668D',
     width: '100%',
   },
   button: {

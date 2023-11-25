@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Dimensions } from "react-native";
+import Constants from 'expo-constants';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const NavButton = ({ navigation }) => {
@@ -29,8 +30,9 @@ const style = StyleSheet.create({
         alignContent: "center",
         width: Dimensions.get("window").width - 30,
         padding: 5,
-        marginTop: 5,
-        marginBottom: -30,
+    position: 'absolute',
+    bottom: 0,
+    marginBottom: Constants.statusBarHeight,
         backgroundColor: '#FFCC70',
         borderRadius: 45,
         borderColor: 'black',

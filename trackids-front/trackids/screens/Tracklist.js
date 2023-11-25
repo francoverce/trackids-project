@@ -7,14 +7,21 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
 import { Dimensions } from "react-native";
 import Constants from 'expo-constants';
+import { useFonts } from 'expo-font';
 
 const Tracklist = ({ route, navigation }) => {
+
+    const [fontLoaded] = useFonts({
+        FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
+    });
+
     const { song, audioFiles, cover } = route.params;
 
     const [sounds, setSounds] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
     const soundObjects = useRef([]);
     const [volumeValues, setVolumeValues] = useState([50, 50, 50, 50]);
+    const trackNames = ['VOZ', 'BATERÍA', 'BAJO', 'OTROS'];
 
     const [IsModalVisible, setIsModalVisible] = useState(false);
 
@@ -112,6 +119,7 @@ const Tracklist = ({ route, navigation }) => {
             <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
                 <View style={styles.topContainer}>
                     <Icon name='arrow-left' size={30} onPress={() => navigation.navigate('Library')} />
+                    <Text style={styles.header}>{song.title.toUpperCase()}</Text>
                     <Icon name='info-circle' size={30} color='blue' onPress={() => mostrarModal()} />
                 </View>
                 <View style={styles.coverContainer}>
@@ -128,16 +136,19 @@ const Tracklist = ({ route, navigation }) => {
                 </View>
                 {audioFiles.map((audio, index) => (
                     <View key={index} style={styles.trackContainer}>
-                        <Icon name='volume-off' size={30} color='black' />
-                        <Slider
-                            min={0}
-                            max={100}
-                            step={1}
-                            values={[volumeValues[index]]}
-                            onChange={(value) => handleVolumeChange(index, value)}
-                            markerColor='yellow'
-                        />
-                        <Icon name='volume-up' size={30} color='black' />
+                        <Text style={styles.trackName}>{trackNames[index]}</Text>
+                        <View style={styles.trackControls}>
+                            <Icon name='volume-off' size={30} color='black' />
+                            <Slider
+                                min={0}
+                                max={100}
+                                step={1}
+                                values={[volumeValues[index]]}
+                                onChange={(value) => handleVolumeChange(index, value)}
+                                markerColor='yellow'
+                            />
+                            <Icon name='volume-up' size={30} color='black' />
+                        </View>
                     </View>
                 ))}
                 <Modal style={{ alignItems: 'center' }} isVisible={IsModalVisible} onBackdropPress={() => cerrarModal()}>
@@ -155,20 +166,26 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-
     },
     bg: {
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
         width: '100%',
-        
+    },
+    header: {
+        fontSize: 22,
+        fontFamily: 'FugazOne',
+        color: '#22668D',
+        textAlign: 'center',
     },
     topContainer: {
         marginTop: Constants.statusBarHeight,
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: Dimensions.get("window").width - 50,
+        borderBottomWidth: 5,
+        borderBottomColor: '#22668D',
     },
     coverContainer: {
         flexDirection: 'row',
@@ -182,44 +199,33 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     trackContainer: {
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        marginHorizontal: 50,
+    },
+    trackControls: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginHorizontal: 50,
-        marginTop: 20,
-    },
-    button: {
-        backgroundColor: '#8ECDDD',
-        borderRadius: 10,
-        padding: 10,
-        margin: 5,
-        width: 40,
-        height: 40,
-    },
-    buttonText: {
-        /*     fontFamily: 'FugazOne-Regular', */
-        fontSize: 14,
-        color: '#22668D',
-        textAlign: 'center',
     },
     trackName: {
-        /*     fontFamily: 'FugazOne-Regular', */
+        fontFamily: 'FugazOne',
+        color: 'black',
         fontSize: 18,
-        fontWeight: 'bold',
-        color: '#000000',
         textAlign: 'left',
     },
     artistName: {
-        /*     fontFamily: 'FugazOne-Regular', */
-        fontSize: 16,
+        fontFamily: 'FugazOne',
         color: '#1C1C1C',
+        fontSize: 16,
         textAlign: 'center',
         textAlign: 'left',
     },
     modalText: {
+        fontFamily: 'FugazOne',
+        color: 'black',
         fontSize: 20,
-        textAlign: "center",
-        color: 'black', // Puedes ajustar el color del texto
-        lineHeight: 24, // Puedes ajustar el espaciado entre líneas
+        textAlign: 'center',
+        lineHeight: 24,
     },
     modalContainer: {
         padding: 15,

@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: Constants.statusBarHeight * 2,
     },
     bg: {
         width: '100%',
@@ -126,11 +125,11 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 22,
         fontFamily: 'FugazOne',
-        color: 'black',
+        color: '#22668D',
         textAlign: 'center',
         marginTop: Constants.statusBarHeight,
         borderBottomWidth: 5,
-        borderBottomColor: 'black',
+        borderBottomColor: '#22668D',
         width: '100%',
     },
     topContainer: {

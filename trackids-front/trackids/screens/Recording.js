@@ -99,16 +99,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     width: '100%',
-    marginBottom: Constants.statusBarHeight * 2,
   },
   header: {
     fontSize: 22,
     fontFamily: 'FugazOne',
-    color: 'black',
+    color: '#22668D',
     textAlign: 'center',
     marginTop: Constants.statusBarHeight,
     borderBottomWidth: 5,
-    borderBottomColor: 'black',
+    borderBottomColor: '#22668D',
     width: '100%',
   },
   row: {
