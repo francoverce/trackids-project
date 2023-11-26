@@ -29,7 +29,7 @@ const YouTubeSearch = ({ navigation }) => {
         return (match && match[7].length == 11) ? match[7] : false;
     }
 
-    const handleSearchSubmit = async () => {
+/*     const handleSearchSubmit = async () => {
         const url = 'https://youtube-mp36.p.rapidapi.com/dl?id=' + idVideo;
         const options = {
             method: 'GET',
@@ -49,6 +49,34 @@ const YouTubeSearch = ({ navigation }) => {
         } catch (error) {
             console.error(error);
             setAllowDownload(false);
+        }
+    } */
+
+    const handleSearchSubmit = async () => {
+        try {
+            downloadAudio();
+            setAllowDownload(true);
+        } catch (error) {
+            console.error(error);
+            setAllowDownload(false);
+        }
+    }
+
+    async function downloadAudio() {
+        try {
+            const link = text;
+            const response = await fetch('https://trackids.onrender.com/AppTracKids/descargarAudio2', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ link }),
+            });
+
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error('Error:', error);
         }
     }
 
@@ -206,3 +234,4 @@ const styles = StyleSheet.create({
 });
 
 export default YouTubeSearch;
+
