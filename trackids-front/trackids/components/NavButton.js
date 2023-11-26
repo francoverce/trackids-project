@@ -29,11 +29,11 @@ const NavButton = ({ navigation, currentScreen }) => {
             <TouchableOpacity onPress={() => navigation.navigate('YouTubeSearch')}>
                 <Image source={isYouTubeSearchScreen ? youtubeIcon : youtubeBWIcon} style={getIconStyle('YouTubeSearch')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Recording')}>
-                <Image source={isRecordingScreen ? recordingIcon : recordingBWIcon} style={getIconStyle('Recording')} />
-            </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Library')}>
                 <Image source={isLibraryScreen ? libraryIcon : libraryBWIcon} style={getIconStyle('Library')} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Recording')}>
+                <Image source={isRecordingScreen ? recordingIcon : recordingBWIcon} style={getIconStyle('Recording')} />
             </TouchableOpacity>
         </View>
     )
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         marginBottom: Constants.statusBarHeight,
         backgroundColor: '#FFCC70',
         borderRadius: 45,
-        borderColor: 'black',
+        borderColor: '#22668D',
         borderWidth: 3,
         // Sombras para Android e iOS
         elevation: 5, // Para Android

@@ -19,18 +19,17 @@ const Home = ({ navigation }) => {
       <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
         <Text style={styles.header}>TRACKIDS</Text>
         <View style={styles.container}>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Recording')}>
-            <Image source={recordingIcon} style={styles.icon} />
-            <Text style={styles.buttonText}>¡GRABEMOS UNA CANCIÓN!</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('YouTubeSearch')}>
+            <Image source={youtubeIcon} style={styles.icon} />
+            <Text style={styles.buttonText}>QUIERO BUSCAR UNA CANCIÓN</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Library')}>
-            
             <Text style={styles.buttonText}>QUIERO VER MI LIBRERÍA</Text>
             <Image source={libraryIcon} style={styles.icon} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('YouTubeSearch')}>
-            <Image source={youtubeIcon} style={styles.icon} />
-            <Text style={styles.buttonText}>QUIERO BUSCAR UNA CANCIÓN</Text>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Recording')}>
+            <Image source={recordingIcon} style={styles.icon} />
+            <Text style={styles.buttonText}>¡GRABEMOS UNA CANCIÓN!</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -62,13 +61,16 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#FFB633',
-    borderRadius: 10,
+    borderRadius: 30,
     padding: 10,
     margin: 20,
     width: Dimensions.get("window").width - 30,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    elevation: 10,
+    borderWidth: 3,
+    borderColor: '#22668D',
   },
   buttonText: {
     fontFamily: "FugazOne",
