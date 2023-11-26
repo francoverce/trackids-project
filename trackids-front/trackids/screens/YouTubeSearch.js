@@ -104,7 +104,7 @@ const YouTubeSearch = ({ navigation }) => {
                         SI TENÉS DUDAS, PRESIONÁ EL BOTÓN DE "?" AZUL
                     </Text>
                 </View>
-                <NavButton navigation={navigation} />
+                <NavButton navigation={navigation} currentScreen="YouTubeSearch" />
             </ImageBackground>
         </View>
     );

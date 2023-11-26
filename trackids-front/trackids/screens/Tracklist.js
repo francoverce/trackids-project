@@ -8,6 +8,12 @@ import Modal from 'react-native-modal';
 import { Dimensions } from "react-native";
 import Constants from 'expo-constants';
 import { useFonts } from 'expo-font';
+import voiceIcon from '../assets/icons/voice.png'
+import drumsIcon from '../assets/icons/drums.png'
+import bassIcon from '../assets/icons/bass.png'
+import otherIcon from '../assets/icons/other.png'
+import muteIcon from '../assets/icons/mute.png'
+import unmuteIcon from '../assets/icons/unmute.png'
 
 const Tracklist = ({ route, navigation }) => {
 
@@ -21,7 +27,13 @@ const Tracklist = ({ route, navigation }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const soundObjects = useRef([]);
     const [volumeValues, setVolumeValues] = useState([50, 50, 50, 50]);
-    const trackNames = ['VOZ', 'BATERÍA', 'BAJO', 'OTROS'];
+
+    const trackInfo = [
+        { name: 'VOZ', icon: voiceIcon, color: 'blue' },
+        { name: 'BATERÍA', icon: drumsIcon, color: 'orange' },
+        { name: 'BAJO', icon: bassIcon, color: 'red' },
+        { name: 'OTROS', icon: otherIcon, color: 'yellow' },
+    ];
 
     const [IsModalVisible, setIsModalVisible] = useState(false);
 
@@ -136,19 +148,20 @@ const Tracklist = ({ route, navigation }) => {
                 </View>
                 {audioFiles.map((audio, index) => (
                     <View key={index} style={styles.trackContainer}>
-                        <Text style={styles.trackName}>{trackNames[index]}</Text>
                         <View style={styles.trackControls}>
-                            <Icon name='volume-off' size={30} color='black' />
+                            <Image source={trackInfo[index].icon} style={styles.icon} />
                             <Slider
                                 min={0}
                                 max={100}
                                 step={1}
                                 values={[volumeValues[index]]}
                                 onChange={(value) => handleVolumeChange(index, value)}
-                                markerColor='yellow'
+                                markerColor={trackInfo[index].color}
+                                showLabel={false}
                             />
-                            <Icon name='volume-up' size={30} color='black' />
+                            {/* <Image source={muteIcon} style={styles.icon} /> */}
                         </View>
+                        <Text style={styles.trackName}>{trackInfo[index].name}</Text>
                     </View>
                 ))}
                 <Modal style={{ alignItems: 'center' }} isVisible={IsModalVisible} onBackdropPress={() => cerrarModal()}>
@@ -203,9 +216,15 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         marginHorizontal: 50,
     },
+    icon: {
+        width: 40,
+        height: 40,
+        margin: 5,
+      },
     trackControls: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: 15
     },
     trackName: {
         fontFamily: 'FugazOne',

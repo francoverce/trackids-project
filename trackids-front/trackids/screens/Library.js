@@ -105,7 +105,7 @@ const Library = ({ navigation }) => {
             ))}
           </View>
         </View>
-        <NavButton navigation={navigation} />
+        <NavButton navigation={navigation} currentScreen="Library" />
       </ImageBackground>
     </ScrollView>
   );

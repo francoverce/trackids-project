@@ -82,7 +82,7 @@ const Recording = ({ navigation }) => {
             <Text style={styles.buttonText}>{recordings.length > 0 ? '\n\n\nClear Recordings' : ''}</Text>
           </TouchableOpacity>
         </View>
-        <NavButton navigation={navigation} />
+        <NavButton navigation={navigation} currentScreen="Recording" />
       </ImageBackground>
     </View>
   );

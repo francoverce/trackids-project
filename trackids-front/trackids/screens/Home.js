@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
-import { ImageBackground, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { ImageBackground, View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import background from '../assets/background.jpg';
 import Constants from 'expo-constants';
+import { Dimensions } from "react-native";
 import { useFonts } from 'expo-font';
+import libraryIcon from '../assets/icons/library.png'
+import recordingIcon from '../assets/icons/recording.png'
+import youtubeIcon from '../assets/icons/youtube.png'
 
 const Home = ({ navigation }) => {
 
@@ -16,12 +20,16 @@ const Home = ({ navigation }) => {
         <Text style={styles.header}>TRACKIDS</Text>
         <View style={styles.container}>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Recording')}>
+            <Image source={recordingIcon} style={styles.icon} />
             <Text style={styles.buttonText}>¡GRABEMOS UNA CANCIÓN!</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Library')}>
+            
             <Text style={styles.buttonText}>QUIERO VER MI LIBRERÍA</Text>
+            <Image source={libraryIcon} style={styles.icon} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('YouTubeSearch')}>
+            <Image source={youtubeIcon} style={styles.icon} />
             <Text style={styles.buttonText}>QUIERO BUSCAR UNA CANCIÓN</Text>
           </TouchableOpacity>
         </View>
@@ -57,13 +65,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     margin: 20,
-    width: 300,
+    width: Dimensions.get("window").width - 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   buttonText: {
     fontFamily: "FugazOne",
     fontSize: 18,
     color: 'black',
     textAlign: 'center',
+  },
+  icon: {
+    width: 50,
+    height: 50,
+    marginHorizontal: 10
   },
 });
 
