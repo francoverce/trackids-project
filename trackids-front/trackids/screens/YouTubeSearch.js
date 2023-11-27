@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ImageBackground, View, StyleSheet, TouchableOpacity, Text, TextInput, Linking, Button } from 'react-native';
+import { ImageBackground, View, StyleSheet, TouchableOpacity, Text, TextInput, Linking, Image } from 'react-native';
 import background from '../assets/background2.jpg';
 import Constants from 'expo-constants';
 import { Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NavButton from '../components/NavButton';
 import { useFonts } from 'expo-font';
+import helpIcon from '../assets/icons/help.png'
 
 const YouTubeSearch = ({ navigation }) => {
 
@@ -14,51 +15,45 @@ const YouTubeSearch = ({ navigation }) => {
     });
 
     const inputUrlRef = useRef();
-    const [text, onChangeText] = React.useState('https://www.youtube.com/watch?v=1Sul2b0Uf7Y');
-    const idVideo = youtube_parser(text);
-    const rapidKey = '09baaeda1cmsh701b9c278e4f8efp14d149jsn6689f5697ac7';
-    const rapidHost = 'youtube-mp36.p.rapidapi.com';
+    const [text, onChangeText] = React.useState('https://www.youtube.com/watch?v=xq-aTe77bkA&ab_channel=Aliz%C3%A9e');
 
     const [songName, setSongName] = useState('');
     const [songUrl, setSongUrl] = useState('');
     const [allowDownload, setAllowDownload] = useState(false);
 
-    function youtube_parser(url) {
-        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-        var match = url.match(regExp);
-        return (match && match[7].length == 11) ? match[7] : false;
-    }
+    const apiKey = 'AIzaSyBPG_YBrzywGdaIODBbIiJF6TI4oOjpMqI';
 
-/*     const handleSearchSubmit = async () => {
-        const url = 'https://youtube-mp36.p.rapidapi.com/dl?id=' + idVideo;
-        const options = {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Key': rapidKey,
-                'X-RapidAPI-Host': rapidHost
-            }
-        };
-
+    const handleSearchSubmit = async () => {
         try {
-            const response = await fetch(url, options);
-            const resultText = await response.text();
-            const result = JSON.parse(resultText);
-            setSongName(result.title);
-            setSongUrl(result.link);
+            await getYouTubeVideoInfo(text);
+            await downloadAudio();
             setAllowDownload(true);
         } catch (error) {
             console.error(error);
             setAllowDownload(false);
         }
-    } */
+    }
 
-    const handleSearchSubmit = async () => {
+    async function getYouTubeVideoInfo(videoUrl) {
         try {
-            downloadAudio();
-            setAllowDownload(true);
+            const videoId = videoUrl.match(/[?&]v=([^?&]+)/)[1];
+            const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`;
+
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error(`Error al obtener información del video. Código de estado: ${response.status}`);
+            }
+            const responseData = await response.json();
+
+            const videoInfo = responseData.items[0].snippet;
+
+            console.log('Nombre del video:', videoInfo.title);
+            console.log('Miniatura del video:', videoInfo.thumbnails.default.url);
+
+            return { title: videoInfo.title, thumbnail: videoInfo.thumbnails.default.url };
         } catch (error) {
-            console.error(error);
-            setAllowDownload(false);
+            console.error('Error al obtener información del video:', error);
+            return null;
         }
     }
 
@@ -116,7 +111,9 @@ const YouTubeSearch = ({ navigation }) => {
                         placeholder="URL de YouTube"
                         onSubmitEditing={() => handleSearchSubmit()}
                     />
-                    <Icon name='question-circle' size={40} color='blue' onPress={() => navigation.navigate('YouTubeTutorial')} />
+                    <TouchableOpacity onPress={() => navigation.navigate('YouTubeTutorial')} >
+                        <Image source={helpIcon} style={styles.icon} />
+                    </TouchableOpacity>
                 </View>
                 {songName && songUrl && (
                     <View style={styles.downloadInfo}>
@@ -176,18 +173,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
     },
-    helpButton: {
-        backgroundColor: 'blue',
-        borderRadius: 20,
-        padding: 10,
-        margin: 10,
-        width: 50,
-    },
-    helpButtonText: {
-        fontSize: 18,
-        color: 'white',
-        textAlign: 'center',
-        fontWeight: 'bold',
+    icon: {
+        width: 40,
+        height: 40,
+        margin: 5,
     },
     downloadInfo: {
         display: 'flex',

@@ -14,6 +14,7 @@ import bassIcon from '../assets/icons/bass.png'
 import otherIcon from '../assets/icons/other.png'
 import muteIcon from '../assets/icons/mute.png'
 import unmuteIcon from '../assets/icons/unmute.png'
+import infoIcon from '../assets/icons/info.png'
 
 const Tracklist = ({ route, navigation }) => {
 
@@ -132,7 +133,10 @@ const Tracklist = ({ route, navigation }) => {
                 <View style={styles.topContainer}>
                     <Icon name='arrow-left' size={30} onPress={() => navigation.navigate('Library')} />
                     <Text style={styles.header}>{song.title.toUpperCase()}</Text>
-                    <Icon name='info-circle' size={30} color='blue' onPress={() => mostrarModal()} />
+                    {/* <Icon name='info-circle' size={30} color='blue' onPress={() => mostrarModal()} /> */}
+                    <TouchableOpacity onPress={() => mostrarModal()} >
+                        <Image source={infoIcon} style={styles.infoIcon} />
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.coverContainer}>
                     <Image source={cover} style={styles.cover} />
@@ -200,6 +204,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 5,
         borderBottomColor: '#22668D',
     },
+    infoIcon: {
+        width: 35,
+        height: 35,
+    },
     coverContainer: {
         flexDirection: 'row',
     },
@@ -220,7 +228,7 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         margin: 5,
-      },
+    },
     trackControls: {
         flexDirection: 'row',
         alignItems: 'center',
