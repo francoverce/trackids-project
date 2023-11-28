@@ -4,6 +4,7 @@ import { Audio } from 'expo-av';
 import background from '../assets/background.jpg';
 import NavButton from '../components/NavButton';
 import Constants from 'expo-constants';
+import { Dimensions } from "react-native";
 import { useFonts } from 'expo-font';
 import * as ImagePicker from 'expo-image-picker';
 import startIcon from '../assets/icons/recordingStart.png'
@@ -102,10 +103,10 @@ const Recording = ({ navigation }) => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Guardar Grabación</Text>
+            <Text style={styles.modalTitle}>GUARDAR PROYECTO</Text>
             <TextInput
               style={styles.input}
-              placeholder="Nombre de la grabación"
+              placeholder="Nombre increíble para mi nuevo proyecto"
               value={tempRecordingName}
               onChangeText={(text) => setTempRecordingName(text)}
               onSubmitEditing={() => {
@@ -113,10 +114,16 @@ const Recording = ({ navigation }) => {
                 Keyboard.dismiss();
               }}
             />
-            <Button title="Seleccionar Imagen" onPress={() => pickImage()} />
+            <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#696eff' }]} onPress={() => pickImage()}>
+              <Text style={styles.buttonText}>ELEGIR IMAGEN</Text>
+            </TouchableOpacity>
             {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
-            <Button title="Guardar" onPress={() => alert(`Guardar grabación: ${tempRecordingName}`)} />
-            <Button title="Cancelar" onPress={() => setModalVisible(false)} />
+            <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#69ff69' }]} onPress={() => alert(`Guardar grabación: ${tempRecordingName}`)}>
+              <Text style={styles.buttonText}>GUARDAR</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#ff6969' }]} onPress={() => setModalVisible(false)}>
+              <Text style={styles.buttonText}>CANCELAR</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -159,8 +166,9 @@ const Recording = ({ navigation }) => {
           )}
         </View>
         <View style={styles.bottomContainer}>
-          <TouchableOpacity onPress={recording ? stopRecording : startRecording}>
+          <TouchableOpacity style={[styles.button, {flexDirection:'column', marginBottom: 50}]} onPress={recording ? stopRecording : startRecording}>
             <Image source={recording ? stopIcon : startIcon} />
+            <Text style={styles.buttonText}>{recording ? 'PAUSAR GRABACIÓN' : 'INICIAR GRABACIÓN'}</Text>
           </TouchableOpacity>
           <NavButton navigation={navigation} currentScreen="Recording" />
         </View>
@@ -206,8 +214,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 10,
-    marginRight: 40
+    margin: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
   fill: {
     flex: 1,
@@ -218,10 +226,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   button: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 25,
     padding: 10,
-    margin: 5,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -236,24 +242,43 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: '#FFCC70',
     padding: 20,
     borderRadius: 10,
-    elevation: 5,
+    width: Dimensions.get("window").width - 50,
+    height: Dimensions.get("window").height / 2,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderColor: '#22668D',
+    borderWidth: 5,
+    borderRadius: 30,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'FugazOne',
+    fontSize: 24,
     marginBottom: 10,
   },
   input: {
     height: 40,
+    width: 300,
     borderColor: 'gray',
+    backgroundColor: 'white',
     borderWidth: 1,
     marginBottom: 10,
     padding: 5,
+    borderRadius: 10,
+  },
+  modalButton: {
+    borderRadius: 15,
+    padding: 10,
+    margin: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    elevation: 5,
   },
 });
 

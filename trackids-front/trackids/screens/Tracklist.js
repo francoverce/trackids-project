@@ -255,15 +255,15 @@ const styles = StyleSheet.create({
         lineHeight: 24,
     },
     modalContainer: {
-        padding: 15,
+        padding: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white',
-        borderColor: '#6372ff',
+        backgroundColor: '#FFCC70',
+        borderColor: '#22668D',
         borderWidth: 5,
         borderRadius: 30,
         width: Dimensions.get("window").width - 50,
-        height: Dimensions.get("window").width - 50,
+        height: Dimensions.get("window").height / 2,
     },
 });
 

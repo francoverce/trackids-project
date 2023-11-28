@@ -21,7 +21,7 @@ const Library = ({ navigation }) => {
       // ...
     ],
     proyectos: [
-      { id: 'feelgoodinc3', title: 'Feel Good Inc.3', artist: 'Gorillaz3', info: 'Esta canción fue grabada en bla bla bla por bla bla3' },
+      { id: 'feelgoodinc3', title: '', artist: 'Alizée - La Isla Bonita', info: 'Esta canción fue grabada en bla bla bla por bla bla3' },
       // ...
     ],
   };
@@ -47,10 +47,10 @@ const Library = ({ navigation }) => {
       require('../assets/tracks/feelgoodinc/other.mp3'),
     ],
     feelgoodinc3: [
-      require('../assets/tracks/feelgoodinc/vocals.mp3'),
-      require('../assets/tracks/feelgoodinc/drums.mp3'),
-      require('../assets/tracks/feelgoodinc/bass.mp3'),
-      require('../assets/tracks/feelgoodinc/other.mp3'),
+      { uri: "https://res.cloudinary.com/dewiieivf/raw/upload/v1701197687/asrfjf8rmay9nghhgsou.mp3" },
+      { uri: "https://res.cloudinary.com/dewiieivf/raw/upload/v1701197687/asrfjf8rmay9nghhgsou.mp3" },
+      { uri: "https://res.cloudinary.com/dewiieivf/raw/upload/v1701197687/asrfjf8rmay9nghhgsou.mp3" },
+      { uri: "https://res.cloudinary.com/dewiieivf/raw/upload/v1701197687/asrfjf8rmay9nghhgsou.mp3" },
     ],
     // Otras canciones...
   };
@@ -63,7 +63,7 @@ const Library = ({ navigation }) => {
       require('../assets/tracks/feelgoodinc/cover.png')
     ],
     feelgoodinc3: [
-      require('../assets/tracks/feelgoodinc/cover.png')
+      { uri: 'https://i.ytimg.com/vi/xq-aTe77bkA/default.jpg' }
     ],
     // Otras canciones...
   }
@@ -98,9 +98,13 @@ const Library = ({ navigation }) => {
           <View style={styles.row}>
             {songs[category].map((song) => (
               <TouchableOpacity style={styles.button} onPress={() => toTracklist(song)} key={song.id}>
-                <Image style={styles.cover} source={covers[song.id][0]} />
-                <Text style={styles.titleText}>{song.title}</Text>
-                <Text style={styles.artistText}>{song.artist}</Text>
+                <ImageBackground style={styles.cover} source={covers[song.id][0]}>
+                  <View style={styles.gradientOverlay} />
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.nameText}>{song.title}</Text>
+                    <Text style={styles.artistText}>{song.artist}</Text>
+                  </View>
+                </ImageBackground>
               </TouchableOpacity>
             ))}
           </View>
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
   },
   menu: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
     height: Constants.statusBarHeight * 2,
   },
   menuButton: {
@@ -147,7 +151,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   selectedMenuButton: {
-    backgroundColor: 'rgba(34, 102, 141, 0.2)',
+    backgroundColor: 'rgba(34, 102, 141, 0.4)',
   },
   row: {
     flexDirection: 'row',
@@ -161,24 +165,44 @@ const styles = StyleSheet.create({
     margin: 10,
     width: 150,
     height: 150,
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative', // Necesario para superponer el texto y el degradado
   },
-  cover: {
-    width: 100,
-    height: 100,
+  gradientOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    borderTopEndRadius: 30,
+    position: 'absolute',
+    marginTop: 90,
+    height: 60,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Ajusta según sea necesario
+  },
+  titleContainer: {
+    position: 'absolute',
+    bottom: 10, // Ajusta según sea necesario
+    left: 10, // Ajusta según sea necesario
   },
   titleText: {
     fontSize: 16,
     fontFamily: 'FugazOne',
-    color: 'black',
+    color: 'black', // Color del texto
     textAlign: 'center',
+  },
+  nameText: {
+    fontSize: 16,
+    fontFamily: 'FugazOne',
+    color: 'white', // Color del texto
+    textAlign: 'left',
+  },
+  cover: {
+    width: 150,
+    height: 150,
   },
   artistText: {
     fontSize: 14,
     fontFamily: 'FugazOne',
-    color: '#4A4A4A',
-    textAlign: 'center',
+    color: '#e3e3e3',
+    textAlign: 'left',
   },
 });
 
