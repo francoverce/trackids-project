@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { ImageBackground, View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
-import background from '../assets/background.jpg';
+import background from '../assets/background8.png';
 import Constants from 'expo-constants';
 import { Dimensions } from "react-native";
 import { useFonts } from 'expo-font';

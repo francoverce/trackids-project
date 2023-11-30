@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ImageBackground, View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { ImageBackground, View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import background from '../assets/background5.png';
 import { guardarToken } from '../secureStore';
+import { Dimensions } from "react-native";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -23,6 +24,7 @@ const Login = ({ navigation }) => {
       const data = await response.json();
       if (data.keyValidate) {
         guardarToken(data.keyValidate);
+        console.log(data.keyValidate)
         navigation.navigate('Home');
       } else {
         alert(data.error || 'Error en la respuesta');
@@ -35,21 +37,25 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
-        <Text style={styles.title}>Inicio de Sesión</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Correo electrónico"
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
-          secureTextEntry
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-        />
-        <Button title="Iniciar Sesión" onPress={handleLogin} />
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>INICIO DE SESIÓN</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Correo electrónico"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Contraseña"
+            secureTextEntry
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+          />
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>LISTO!</Text>
+          </TouchableOpacity>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -67,10 +73,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  formContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+  },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    fontFamily: "FugazOne",
+    fontSize: 36,
+    color: 'white',
+    textAlign: 'center',
+    margin: 20,
+    textShadowColor: 'black',  // Color del "borde"
+    textShadowOffset: { width: 1, height: 1 },  // Ajusta según sea necesario
+    textShadowRadius: 2,  // Ajusta según sea necesario
   },
   input: {
     width: '75%',
@@ -78,9 +96,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 30,
     marginBottom: 10,
     paddingLeft: 10,
+  },
+  button: {
+    backgroundColor: '#FFB633',
+    borderRadius: 30,
+    padding: 10,
+    margin: 20,
+    width: Dimensions.get("window").width - 100,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 10,
+    borderWidth: 3,
+    borderColor: '#22668D',
+  },
+  buttonText: {
+    fontFamily: "FugazOne",
+    fontSize: 18,
+    color: 'black',
+    textAlign: 'center',
   },
 });
 

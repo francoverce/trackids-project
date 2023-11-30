@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   },
   menu: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
     height: Constants.statusBarHeight * 2,
   },
   menuButton: {
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   selectedMenuButton: {
-    backgroundColor: 'rgba(34, 102, 141, 0.4)',
+    backgroundColor: 'rgba(34, 102, 141, 0.25)',
   },
   row: {
     flexDirection: 'row',

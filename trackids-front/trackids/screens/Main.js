@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
-import background from '../assets/background6.png';
+import background from '../assets/background7.png';
 import { Dimensions } from "react-native";
 
 const Main = ({ navigation }) => {
@@ -46,7 +46,7 @@ const Main = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   bg: {
@@ -56,25 +56,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    paddingVertical: 100,
+    paddingVertical: 80,
     paddingHorizontal: 45,
     justifyContent: 'center',
     alignItems: 'center',
   },
   headingText: {
-    fontSize: 54,
+    fontSize: 64,
     marginBottom: 20,
-    color: 'black',
+    color: 'white',
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 4,
     borderBottomWidth: 5,
-    borderColor: 'black',
+    borderColor: '#22668D',
     fontFamily: 'FugazOne'
   },
   subtitleText: {
     fontSize: 24,
-    color: 'black',
+    color: 'white',
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 2, height: 1 },
     textShadowRadius: 4,
@@ -82,11 +82,11 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 18,
-    color: 'black',
+    color: '#22668D',
     fontFamily: 'FugazOne'
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: 10,
     shadowColor: '#000000',
     width: 300,
     justifyContent: 'center',
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFB633',
     borderRadius: 30,
     padding: 10,
-    margin: 20,
+    marginTop: 20,
     width: Dimensions.get("window").width - 100,
     flexDirection: 'row',
     alignItems: 'center',

@@ -13,7 +13,7 @@ const YouTubeSearch = ({ navigation }) => {
 
     const [token, setToken] = useState('');
     SecureStore.getItemAsync("token").then((token) => setToken(token));
-    console.log(token)
+    
     const [fontLoaded] = useFonts({
         FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
     });
