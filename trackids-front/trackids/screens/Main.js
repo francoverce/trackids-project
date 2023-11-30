@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
+import background from '../assets/background6.png';
+import { Dimensions } from "react-native";
 
 const Main = ({ navigation }) => {
 
@@ -17,74 +19,95 @@ const Main = ({ navigation }) => {
   }
 
   return (
-    <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.imageBackground}>
-      <View style={styles.container}>
-        <View style={styles.card}>
-          <Text style={styles.headingText}>BIENVENIDO</Text>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={Login}>
-              <Text style={styles.buttonText}>Iniciar sesión</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={Register}>
-              <Text style={styles.buttonText}>Crear una cuenta</Text>
-            </TouchableOpacity>
+    <View style={styles.container}>
+      <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
+        <View style={styles.container}>
+          <View style={styles.card}>
+            <Text style={styles.subtitleText}>EXPERIMENTA CON</Text>
+            <Text style={styles.headingText}>TRACKIDS</Text>
+            <View style={styles.buttonContainer}>
+              <Text style={styles.questionText}>¿Es tu primera vez en Trackids?</Text>
+              <TouchableOpacity style={styles.button} onPress={Login}>
+                <Text style={styles.buttonText}>NO, YA TENGO UNA CUENTA</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={Register}>
+                <Text style={styles.buttonText}>SÍ, QUIERO REGISTRARME</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  imageBackground: {
-    flex: 1,
+  bg: {
     width: '100%',
-    resizeMode: 'cover',
+    height: '100%',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   card: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 30,
     paddingVertical: 100,
     paddingHorizontal: 45,
+    justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000000',
-    shadowOffset: { width: 1, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
   },
   headingText: {
-    fontSize: 35,
+    fontSize: 54,
     marginBottom: 20,
-    color: '#000000',
+    color: 'black',
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 4,
+    borderBottomWidth: 5,
+    borderColor: 'black',
+    fontFamily: 'FugazOne'
+  },
+  subtitleText: {
+    fontSize: 24,
+    color: 'black',
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 2, height: 1 },
+    textShadowRadius: 4,
+    fontFamily: 'FugazOne'
+  },
+  questionText: {
+    fontSize: 18,
+    color: 'black',
     fontFamily: 'FugazOne'
   },
   buttonContainer: {
     marginTop: 20,
     shadowColor: '#000000',
     width: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   button: {
-    width: 320,
-    borderRadius: 15,
-    paddingVertical: 15,
+    backgroundColor: '#FFB633',
+    borderRadius: 30,
+    padding: 10,
+    margin: 20,
+    width: Dimensions.get("window").width - 100,
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#4CAF50',
-    marginBottom: 10,
+    justifyContent: 'center',
+    elevation: 10,
+    borderWidth: 3,
+    borderColor: '#22668D',
   },
   buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: "FugazOne",
+    fontSize: 18,
+    color: 'black',
+    textAlign: 'center',
   },
   buttonSpacing: {
     height: 10,

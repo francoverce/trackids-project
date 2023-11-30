@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ImageBackground, ScrollView, View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import background from '../assets/background3.jpg';
 import Constants from 'expo-constants';
@@ -11,70 +11,103 @@ const Library = ({ navigation }) => {
     FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
   });
 
+  const token = '9d761062fbdb4ec1a3ef57132f74191b';
+
   const [category, setCategory] = useState('trackids');
+  const [songs, setSongs] = useState([]);
+  const [projects, setProjects] = useState([]);
 
-  const songs = {
-    trackids: [
-      { id: 'feelgoodinc', title: 'Feel Good Inc.', artist: 'Gorillaz', info: 'Esta canción fue grabada en bla bla bla por bla bla' },
-      { id: 'feelgoodinc2', title: 'Feel Good Inc.2', artist: 'Gorillaz2', info: 'Esta canción fue grabada en bla bla bla por bla bla2' },
+  useEffect(() => {
+    const getSongs = async () => {
+      // Puedes cargar las canciones de la manera que necesites aquí
+      const loadedSongs = [
+        {
+          id: 'feelgoodinc',
+          title: 'Feel Good Inc.',
+          artist: 'Gorillaz',
+          info: 'Esta canción fue grabada en bla bla bla por bla bla',
+          audioFiles: [
+            require('../assets/tracks/feelgoodinc/vocals.mp3'),
+            require('../assets/tracks/feelgoodinc/drums.mp3'),
+            require('../assets/tracks/feelgoodinc/bass.mp3'),
+            require('../assets/tracks/feelgoodinc/other.mp3'),
+          ],
+          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+        },
+        {
+          id: 'feelgoodinc2',
+          title: 'Feel Good Inc.2',
+          artist: 'Gorillaz2',
+          info: 'Esta canción fue grabada en bla bla bla por bla bla2',
+          audioFiles: [
+            require('../assets/tracks/feelgoodinc/vocals.mp3'),
+            require('../assets/tracks/feelgoodinc/drums.mp3'),
+            require('../assets/tracks/feelgoodinc/bass.mp3'),
+            require('../assets/tracks/feelgoodinc/other.mp3'),
+          ],
+          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+        },
+        // Otras canciones...
+      ];
+      setSongs(loadedSongs);
+    };
 
-      // ...
-    ],
-    proyectos: [
-      { id: 'feelgoodinc3', title: '', artist: 'Alizée - La Isla Bonita', info: 'Esta canción fue grabada en bla bla bla por bla bla3' },
-      // ...
-    ],
-  };
+    const getProjects = async () => {
+      try {
+        const response = await fetch('http://10.0.2.2:8000/AppTracKids/getProyectos', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
+        const data = await response.json();
+        setProjects(data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
 
-  const feelgoodinc = {
-    id: 'feelgoodinc',
-    title: 'Feel Good Inc.',
-    artist: 'Gorillaz',
-    info: 'Esta canción fue grabada en bla bla bla por bla bla'
-  }
+    getSongs(); // Llamar a getSongs para cargar las canciones
+    getProjects();
+  }, []);
 
-  const audioFiles = {
-    feelgoodinc: [
-      require('../assets/tracks/feelgoodinc/vocals.mp3'),
-      require('../assets/tracks/feelgoodinc/drums.mp3'),
-      require('../assets/tracks/feelgoodinc/bass.mp3'),
-      require('../assets/tracks/feelgoodinc/other.mp3'),
-    ],
-    feelgoodinc2: [
-      require('../assets/tracks/feelgoodinc/vocals.mp3'),
-      require('../assets/tracks/feelgoodinc/drums.mp3'),
-      require('../assets/tracks/feelgoodinc/bass.mp3'),
-      require('../assets/tracks/feelgoodinc/other.mp3'),
-    ],
-    feelgoodinc3: [
-      { uri: "https://res.cloudinary.com/dewiieivf/raw/upload/v1701197687/asrfjf8rmay9nghhgsou.mp3" },
-      { uri: "https://res.cloudinary.com/dewiieivf/raw/upload/v1701197687/asrfjf8rmay9nghhgsou.mp3" },
-      { uri: "https://res.cloudinary.com/dewiieivf/raw/upload/v1701197687/asrfjf8rmay9nghhgsou.mp3" },
-      { uri: "https://res.cloudinary.com/dewiieivf/raw/upload/v1701197687/asrfjf8rmay9nghhgsou.mp3" },
-    ],
-    // Otras canciones...
-  };
+  const currentList = category === 'trackids' ? songs : projects;
 
-  const covers = {
-    feelgoodinc: [
-      require('../assets/tracks/feelgoodinc/cover.png')
-    ],
-    feelgoodinc2: [
-      require('../assets/tracks/feelgoodinc/cover.png')
-    ],
-    feelgoodinc3: [
-      { uri: 'https://i.ytimg.com/vi/xq-aTe77bkA/default.jpg' }
-    ],
-    // Otras canciones...
-  }
+  const toTracklist = (item) => {
+    let songInfo = {};
+  
+    if (item.hasOwnProperty('artist') && item.hasOwnProperty('info')) {
+      // Es una canción
+      songInfo = {
+        title: item.title,
+        artist: item.artist,
+        info: item.info,
+      };
+      itemAudioFiles = item.audioFiles;
+    } else {
+      // Es un proyecto
+      songInfo = {
+        title: item.title,
+        artist: 'YouTube', // Puedes establecer esto como desees o dejarlo en blanco
+        info: 'Esta canción fue descargada de YouTube, por lo cual no tenemos su información detallada',   // Puedes establecer esto como desees o dejarlo en blanco
 
-  const toTracklist = (songSelected) => {
+      };
+      itemAudioFiles = [
+        item.vocals,
+        item.bass,
+        item.drums,
+        item.other
+      ]; // Asegúrate de que la estructura sea coherente
+    }
+
     navigation.navigate('Tracklist', {
-      song: songSelected,
-      audioFiles: audioFiles[songSelected.id],
-      cover: covers[songSelected.id][0],
+      song: songInfo,
+      audioFiles: itemAudioFiles, // Asegúrate de que la estructura sea coherente
+      cover: item.imagen,
     });
   };
+  
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -95,14 +128,13 @@ const Library = ({ navigation }) => {
               <Text style={styles.titleText}>Mis Proyectos</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.row}>
-            {songs[category].map((song) => (
-              <TouchableOpacity style={styles.button} onPress={() => toTracklist(song)} key={song.id}>
-                <ImageBackground style={styles.cover} source={covers[song.id][0]}>
+          <View style={styles.gridContainer}>
+            {currentList.map((item) => (
+              <TouchableOpacity style={styles.gridItem} onPress={() => toTracklist(item)} key={item.id}>
+                <ImageBackground style={styles.cover} source={{ uri: item.imagen }}>
                   <View style={styles.gradientOverlay} />
                   <View style={styles.titleContainer}>
-                    <Text style={styles.nameText}>{song.title}</Text>
-                    <Text style={styles.artistText}>{song.artist}</Text>
+                    <Text style={styles.nameText}>{item.title}</Text>
                   </View>
                 </ImageBackground>
               </TouchableOpacity>
@@ -157,6 +189,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around', // Opcional: ajusta según tus preferencias
+  },
+  gridItem: {
+    width: '40%', // Ajusta según tus preferencias para dos elementos por fila
+    aspectRatio: 1, // Para mantener una relación de aspecto cuadrada
+    margin: 10, // Ajusta según tus preferencias
   },
   button: {
     backgroundColor: 'rgba(0, 0, 0, 0.1)',

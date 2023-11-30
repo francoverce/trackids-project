@@ -22,11 +22,32 @@ const Recording = ({ navigation }) => {
   const [recording, setRecording] = React.useState();
   const [recordings, setRecordings] = React.useState([]);
 
-  const [image, setImage] = useState(null);
-
   const [modalVisible, setModalVisible] = useState(false);
   const [tempRecordingName, setTempRecordingName] = useState('');
   const [recordingName, setRecordingName] = useState('');
+  const [image, setImage] = useState(null);
+
+  async function saveProject() {
+    try {
+        const datos = {
+            title: recordingName,
+            cover: image,
+            track: 'CLOUDINARY_URL',
+        };
+        const response = await fetch('URL', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: datos,
+        });
+
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
   async function startRecording() {
     try {

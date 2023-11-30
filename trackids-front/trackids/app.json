@@ -21,6 +21,14 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "cleartext": {
+          "config": {
+            "mode": "allow",
+            "allowResourceUrls": ["*"]
+          }
+        }
       }
     },
     "web": {

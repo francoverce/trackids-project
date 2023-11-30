@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ImageBackground, View, StyleSheet, TouchableOpacity, Text, TextInput, Linking, Image } from 'react-native';
+import { ImageBackground, View, StyleSheet, TouchableOpacity, Text, TextInput, Linking, Image, ActivityIndicator } from 'react-native';
 import background from '../assets/background2.jpg';
 import Constants from 'expo-constants';
 import { Dimensions } from "react-native";
@@ -15,13 +15,57 @@ const YouTubeSearch = ({ navigation }) => {
     });
 
     const inputUrlRef = useRef();
-    const [text, onChangeText] = React.useState('https://www.youtube.com/watch?v=xq-aTe77bkA&ab_channel=Aliz%C3%A9e');
+    const [text, onChangeText] = React.useState('https://www.youtube.com/watch?v=BuW1SqwH_g0');
 
     const [songName, setSongName] = useState('');
+    const [songImage, setSongImage] = useState('');
+    const [songAudioFiles, setSongAudioFiles] = useState([]);
     const [songUrl, setSongUrl] = useState('');
+
+    const [songData, setSongData] = useState([])
+
+    const [loadingMessage, setLoadingMessage] = useState('Descargando... Esto puede tardar un par ee minutos');
     const [allowDownload, setAllowDownload] = useState(false);
 
     const apiKey = 'AIzaSyBPG_YBrzywGdaIODBbIiJF6TI4oOjpMqI';
+
+    const token = '9d761062fbdb4ec1a3ef57132f74191b';
+
+    async function downloadAudio() {
+        try {
+            const response = await fetch('http://10.0.2.2:8000/AppTracKids/obtenerSeparacionPorYoutube', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ link: text }),
+            });
+            const data = await response.json();
+            console.log(data);
+            setSongData([data.id]);
+            setSongAudioFiles([data.vocals, data.drums, data.bass, data.other]);
+
+            if (data.id && data.vocals && data.drums && data.bass && data.other) {
+                toTracklist();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    const toTracklist = () => {
+        navigation.navigate('Tracklist', {
+            song: {
+                id: songData[0],
+                title: songName,
+                artist: '',
+                info: '',
+            },
+            cover: songImage,
+            audioFiles: songAudioFiles,
+        });
+    }
 
     const handleSearchSubmit = async () => {
         try {
@@ -49,29 +93,13 @@ const YouTubeSearch = ({ navigation }) => {
 
             console.log('Nombre del video:', videoInfo.title);
             console.log('Miniatura del video:', videoInfo.thumbnails.default.url);
+            setSongName(videoInfo.title);
+            setSongImage(videoInfo.thumbnails.default.url);
 
             return { title: videoInfo.title, thumbnail: videoInfo.thumbnails.default.url };
         } catch (error) {
             console.error('Error al obtener información del video:', error);
             return null;
-        }
-    }
-
-    async function downloadAudio() {
-        try {
-            const link = text;
-            const response = await fetch('https://trackids.onrender.com/AppTracKids/descargarAudio2', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ link }),
-            });
-
-            const data = await response.json();
-            console.log(data);
-        } catch (error) {
-            console.error('Error:', error);
         }
     }
 
@@ -115,10 +143,16 @@ const YouTubeSearch = ({ navigation }) => {
                         <Image source={helpIcon} style={styles.icon} />
                     </TouchableOpacity>
                 </View>
+                {songName && !songUrl ? (
+                    <View>
+                        <ActivityIndicator size="large" color="#0000ff" />
+                        <Text style={styles.trackName}>{loadingMessage}</Text>
+                    </View>
+                ) : null}
                 {songName && songUrl && (
                     <View style={styles.downloadInfo}>
                         <Text style={styles.trackName}>{songName}</Text>
-                        <OpenURLButton url={songUrl}>DESCARGAR</OpenURLButton>
+                        <OpenURLButton url={songUrl}>GUARDAR</OpenURLButton>
                     </View>
                 )}
                 <View style={styles.bottomContainer}>

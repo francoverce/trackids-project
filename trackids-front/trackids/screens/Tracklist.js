@@ -39,7 +39,7 @@ const Tracklist = ({ route, navigation }) => {
     const [IsModalVisible, setIsModalVisible] = useState(false);
 
     const loadSounds = async () => {
-        const loadedSounds = await Promise.all(audioFiles.map(file => Audio.Sound.createAsync(file)));
+        const loadedSounds = await Promise.all(audioFiles.map(file => Audio.Sound.createAsync({ uri: file })));
         setSounds(loadedSounds);
 
         // Guardar las referencias a las pistas de audio en soundObjects.current
@@ -93,7 +93,7 @@ const Tracklist = ({ route, navigation }) => {
     };
 
     const handleVolumeChange = async (index, value) => {
-        console.log('INX: ' + index + ' VAL: ' + value)
+        /* console.log('INX: ' + index + ' VAL: ' + value) */
         const sound = soundObjects.current[index]; // Obtener la referencia al objeto de sonido específico
 
         if (sound) {
@@ -139,7 +139,7 @@ const Tracklist = ({ route, navigation }) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.coverContainer}>
-                    <Image source={cover} style={styles.cover} />
+                    <Image source={{ uri: cover }} style={styles.cover} />
                     <View style={styles.titleContainer}>
                         <Text style={styles.trackName}>{song.title}</Text>
                         <Text style={styles.artistName}>{song.artist}</Text>
@@ -268,47 +268,3 @@ const styles = StyleSheet.create({
 });
 
 export default Tracklist;
-
-/* import RNFetchBlob from 'react-native-fetch-blob';
-
-const uploadAudio = async (audioData) => {
-  const formData = new FormData();
-  formData.append('audio', {
-    uri: audioData.uri,
-    type: 'audio/mp3',
-    name: 'audio.mp3',
-  });
-
-  try {
-    const response = await fetch('http://tu-backend.com/audio/', {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
-    if (response.ok) {
-      console.log('Archivo de audio subido con éxito.');
-    } else {
-      console.error('Error al subir el archivo de audio.');
-    }
-  } catch (error) {
-    console.error('Error de red:', error);
-  }
-};
-
-import { RNFetchBlob } from 'react-native-fetch-blob';
-
-const downloadAudio = async (audioId) => {
-  try {
-    const response = await RNFetchBlob.config({
-      fileCache: true,
-    }).fetch('GET', `http://tu-backend.com/audio/${audioId}/`);
-
-    // Usa la respuesta como sea necesario (por ejemplo, reproducir el audio).
-    console.log('Archivo de audio descargado con éxito:', response.path());
-  } catch (error) {
-    console.error('Error al descargar el archivo de audio:', error);
-  }
-}; */
