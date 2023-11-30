@@ -12,8 +12,12 @@ import stopIcon from '../assets/icons/recordingStop.png'
 import deleteIcon from '../assets/icons/recordingDelete.png'
 import playIcon from '../assets/icons/recordingPlay.png'
 import downloadIcon from '../assets/icons/recordingDownload.png'
+import * as SecureStore from 'expo-secure-store';
 
 const Recording = ({ navigation }) => {
+
+  const [token, setToken] = useState('');
+  SecureStore.getItemAsync("token").then((token) => setToken(token));
 
   const [fontLoaded] = useFonts({
     FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
@@ -29,25 +33,25 @@ const Recording = ({ navigation }) => {
 
   async function saveProject() {
     try {
-        const datos = {
-            title: recordingName,
-            cover: image,
-            track: 'CLOUDINARY_URL',
-        };
-        const response = await fetch('URL', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: datos,
-        });
+      const datos = {
+        title: recordingName,
+        cover: image,
+        track: 'CLOUDINARY_URL',
+      };
+      const response = await fetch('URL', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: datos,
+      });
 
-        const data = await response.json();
-        console.log(data);
+      const data = await response.json();
+      console.log(data);
     } catch (error) {
-        console.error('Error:', error);
+      console.error('Error:', error);
     }
-}
+  }
 
   async function startRecording() {
     try {
@@ -187,7 +191,7 @@ const Recording = ({ navigation }) => {
           )}
         </View>
         <View style={styles.bottomContainer}>
-          <TouchableOpacity style={[styles.button, {flexDirection:'column', marginBottom: 50}]} onPress={recording ? stopRecording : startRecording}>
+          <TouchableOpacity style={[styles.button, { flexDirection: 'column', marginBottom: 50 }]} onPress={recording ? stopRecording : startRecording}>
             <Image source={recording ? stopIcon : startIcon} />
             <Text style={styles.buttonText}>{recording ? 'PAUSAR GRABACIÓN' : 'INICIAR GRABACIÓN'}</Text>
           </TouchableOpacity>

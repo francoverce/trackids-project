@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from '../screens/Home';
@@ -10,13 +10,26 @@ import Library from '../screens/Library';
 import Tracklist from '../screens/Tracklist';
 import YouTubeSearch from '../screens/YouTubeSearch';
 import YouTubeTutorial from '../screens/YouTubeTutorial';
+import { obtenerToken } from '../secureStore';
 
 const Stack = createNativeStackNavigator()
 
 const MainStack = () => {
+
+    const [token, setToken] = useState(null);
+    // Obtener el token al cargar el componente
+    useEffect(() => {
+        const obtenerYConfigurarToken = async () => {
+            const tokenAlmacenado = await obtenerToken();
+            setToken(tokenAlmacenado);
+        };
+
+        obtenerYConfigurarToken();
+    }, []);
+
     return (
         <NavigationContainer>
-                <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name='Main' component={Main} />
                 <Stack.Screen name='Login' component={Login} />
                 <Stack.Screen name='Register' component={Register} />

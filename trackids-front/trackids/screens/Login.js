@@ -1,22 +1,34 @@
 import React, { useState } from 'react';
 import { ImageBackground, View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import background from '../assets/background5.png';
+import { guardarToken } from '../secureStore';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-
-    // acá poner llamado a la api para login
-
-    if (email && password) {
-
-      alert('Inicio de sesión exitoso');
-      navigation.navigate('Home')
-    } else {
-
-      alert('Error en el inicio de sesión. Verifica tus credenciales.');
+  const handleLogin = async () => {
+    try {
+      const dataUser = {
+        email: email,
+        password: password
+      }
+      const response = await fetch('http://10.0.2.2:8000/AppTracKids/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataUser),
+      });
+      const data = await response.json();
+      if (data.keyValidate) {
+        guardarToken(data.keyValidate);
+        navigation.navigate('Home');
+      } else {
+        alert(data.error || 'Error en la respuesta');
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
   };
 

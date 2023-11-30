@@ -2,21 +2,34 @@ import React, { useState } from 'react';
 import { ImageBackground, View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import background from '../assets/background4.png';
 
-const Register = () => {
+const Register = ( navigation ) => {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleRegister = () => {
-
-    //llamado a la api para registro
-
-    if (email && password && confirmPassword === password) {
-
-      alert('Registro exitoso');
-    } else {
-
-      alert('Error en el registro. Verifica tus datos.');
+  const handleRegister = async () => {
+    try {
+      const dataUser = {
+        email: email,
+        password: password,
+        name: username
+      }
+      const response = await fetch('http://10.0.2.2:8000/AppTracKids/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataUser),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        navigation.navigate('Login');
+      } else {
+        alert(data.error)
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
   };
 
@@ -29,6 +42,12 @@ const Register = () => {
           placeholder="Correo electrónico"
           onChangeText={(text) => setEmail(text)}
           value={email}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre"
+          onChangeText={(text) => setUsername(text)}
+          value={username}
         />
         <TextInput
           style={styles.input}

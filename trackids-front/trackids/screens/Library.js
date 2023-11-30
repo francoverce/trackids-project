@@ -4,20 +4,34 @@ import background from '../assets/background3.jpg';
 import Constants from 'expo-constants';
 import NavButton from '../components/NavButton';
 import { useFonts } from 'expo-font';
+import * as SecureStore from 'expo-secure-store';
+import { useIsFocused } from "@react-navigation/native";
 
 const Library = ({ navigation }) => {
+
+  const [token, setToken] = useState('');
+  SecureStore.getItemAsync("token").then((token) => setToken(token));
 
   const [fontLoaded] = useFonts({
     FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
   });
 
-  const token = '9d761062fbdb4ec1a3ef57132f74191b';
-
   const [category, setCategory] = useState('trackids');
   const [songs, setSongs] = useState([]);
   const [projects, setProjects] = useState([]);
 
-  useEffect(() => {
+  const isFocused = useIsFocused();
+
+    useEffect(() => {
+        console.log("called");
+ 
+        // Call only when screen open or when back on screen 
+        if(isFocused){ 
+            getSongs();
+            getProjects();
+        }
+    }, [isFocused]);
+
     const getSongs = async () => {
       // Puedes cargar las canciones de la manera que necesites aquí
       const loadedSongs = [
@@ -47,6 +61,58 @@ const Library = ({ navigation }) => {
           ],
           imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
         },
+        {
+          id: 'feelgoodinc3',
+          title: 'Feel Good Inc.',
+          artist: 'Gorillaz',
+          info: 'Esta canción fue grabada en bla bla bla por bla bla',
+          audioFiles: [
+            require('../assets/tracks/feelgoodinc/vocals.mp3'),
+            require('../assets/tracks/feelgoodinc/drums.mp3'),
+            require('../assets/tracks/feelgoodinc/bass.mp3'),
+            require('../assets/tracks/feelgoodinc/other.mp3'),
+          ],
+          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+        },
+        {
+          id: 'feelgoodinc4',
+          title: 'Feel Good Inc.',
+          artist: 'Gorillaz',
+          info: 'Esta canción fue grabada en bla bla bla por bla bla',
+          audioFiles: [
+            require('../assets/tracks/feelgoodinc/vocals.mp3'),
+            require('../assets/tracks/feelgoodinc/drums.mp3'),
+            require('../assets/tracks/feelgoodinc/bass.mp3'),
+            require('../assets/tracks/feelgoodinc/other.mp3'),
+          ],
+          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+        },
+        {
+          id: 'feelgoodinc5',
+          title: 'Feel Good Inc.',
+          artist: 'Gorillaz',
+          info: 'Esta canción fue grabada en bla bla bla por bla bla',
+          audioFiles: [
+            require('../assets/tracks/feelgoodinc/vocals.mp3'),
+            require('../assets/tracks/feelgoodinc/drums.mp3'),
+            require('../assets/tracks/feelgoodinc/bass.mp3'),
+            require('../assets/tracks/feelgoodinc/other.mp3'),
+          ],
+          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+        },
+        {
+          id: 'feelgoodinc6',
+          title: 'Feel Good Inc.',
+          artist: 'Gorillaz',
+          info: 'Esta canción fue grabada en bla bla bla por bla bla',
+          audioFiles: [
+            require('../assets/tracks/feelgoodinc/vocals.mp3'),
+            require('../assets/tracks/feelgoodinc/drums.mp3'),
+            require('../assets/tracks/feelgoodinc/bass.mp3'),
+            require('../assets/tracks/feelgoodinc/other.mp3'),
+          ],
+          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+        },
         // Otras canciones...
       ];
       setSongs(loadedSongs);
@@ -68,15 +134,11 @@ const Library = ({ navigation }) => {
       }
     };
 
-    getSongs(); // Llamar a getSongs para cargar las canciones
-    getProjects();
-  }, []);
-
   const currentList = category === 'trackids' ? songs : projects;
 
   const toTracklist = (item) => {
     let songInfo = {};
-  
+
     if (item.hasOwnProperty('artist') && item.hasOwnProperty('info')) {
       // Es una canción
       songInfo = {
@@ -107,7 +169,7 @@ const Library = ({ navigation }) => {
       cover: item.imagen,
     });
   };
-  
+
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -135,6 +197,9 @@ const Library = ({ navigation }) => {
                   <View style={styles.gradientOverlay} />
                   <View style={styles.titleContainer}>
                     <Text style={styles.nameText}>{item.title}</Text>
+                    {currentList === 'trackids' && (
+                      <Text style={styles.artistText}>{item.artist}</Text>
+                    )}
                   </View>
                 </ImageBackground>
               </TouchableOpacity>
@@ -215,8 +280,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     borderTopEndRadius: 30,
     position: 'absolute',
-    marginTop: 90,
-    height: 60,
+    marginTop: 110,
+    height: 40,
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Ajusta según sea necesario
   },
   titleContainer: {

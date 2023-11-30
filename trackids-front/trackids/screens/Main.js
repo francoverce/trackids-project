@@ -10,6 +10,8 @@ const Main = ({ navigation }) => {
     FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
   });
 
+  if (!fontLoaded) return null;
+
   const Login = () => {
     navigation.navigate('Login')
   }
