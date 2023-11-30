@@ -93,9 +93,7 @@ const Tracklist = ({ route, navigation }) => {
     };
 
     const handleVolumeChange = async (index, value) => {
-        /* console.log('INX: ' + index + ' VAL: ' + value) */
         const sound = soundObjects.current[index]; // Obtener la referencia al objeto de sonido específico
-
         if (sound) {
             await sound.setVolumeAsync(value / 100); // Establecer el volumen para la pista de audio específica
             const newVolumeValues = [...volumeValues];
@@ -133,7 +131,6 @@ const Tracklist = ({ route, navigation }) => {
                 <View style={styles.topContainer}>
                     <Icon name='arrow-left' size={30} onPress={() => navigation.navigate('Library')} />
                     <Text style={styles.header}>{song.title.toUpperCase()}</Text>
-                    {/* <Icon name='info-circle' size={30} color='blue' onPress={() => mostrarModal()} /> */}
                     <TouchableOpacity onPress={() => mostrarModal()} >
                         <Image source={infoIcon} style={styles.infoIcon} />
                     </TouchableOpacity>
