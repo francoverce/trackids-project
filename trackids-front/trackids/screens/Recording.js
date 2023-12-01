@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, Button, Image, Modal, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, Button, Image, Modal, TextInput, ActivityIndicator } from 'react-native';
 import { Audio } from 'expo-av';
 import background from '../assets/background.jpg';
 import NavButton from '../components/NavButton';
@@ -31,26 +31,63 @@ const Recording = ({ navigation }) => {
   const [recordingName, setRecordingName] = useState('');
   const [image, setImage] = useState(null);
 
-  async function saveProject() {
+  const [saving, setSaving] = useState(false);
+
+  const [separatedTrack, setSeparatedTrack] = useState(null);
+
+  async function separateAudio() {
     try {
-      const datos = {
-        title: recordingName,
-        cover: image,
-        track: 'CLOUDINARY_URL',
-      };
-      const response = await fetch('URL', {
+      setSaving(true);
+      const formData = new FormData();
+      formData.append('audio', {
+        uri: recordings[0].file,
+        type: 'audio/mpeg', // Ajusta el tipo de contenido según tu necesidad
+        name: 'audio.mp3',
+      });
+      formData.append('title', tempRecordingName);
+      formData.append('imagen', {
+        uri: image,
+        type: 'image/jpeg', // Ajusta el tipo de contenido según tu necesidad
+        name: 'imagen.jpg',
+      });
+      console.log(JSON.stringify(formData))
+      const response = await fetch('http://10.0.2.2:8000/AppTracKids/obtenerSeparacionPorAudio', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data', // Indica que estás enviando datos de formdata
         },
-        body: datos,
+        body: formData,
       });
-
       const data = await response.json();
-      console.log(data);
+      console.log('Separation Data:', data);
+      // Continúa con el manejo de la respuesta según tus necesidades
+      setSeparatedTrack(data);
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setSaving(false);
     }
+  }
+
+  useEffect(() => {
+    // Este efecto se ejecutará después de cada renderizado
+    if (separatedTrack) {
+      toTracklist();
+    }
+  }, [separatedTrack]);
+
+  const toTracklist = () => {
+    navigation.navigate('Tracklist', {
+      song: {
+        id: separatedTrack.id,
+        title: tempRecordingName,
+        artist: '',
+        info: 'Esta es una grabación mía!',
+      },
+      cover: separatedTrack.imagen,
+      audioFiles: [separatedTrack.vocals, separatedTrack.drums, separatedTrack.bass, separatedTrack.other],
+    });
   }
 
   async function startRecording() {
@@ -61,7 +98,7 @@ const Recording = ({ navigation }) => {
           allowsRecordingIOS: true,
           playsInSilentModeIOS: true
         });
-        const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
+        const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.LOW_QUALITY);
         setRecording(recording);
       }
     } catch (err) {
@@ -143,11 +180,15 @@ const Recording = ({ navigation }) => {
               <Text style={styles.buttonText}>ELEGIR IMAGEN</Text>
             </TouchableOpacity>
             {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
-            <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#69ff69' }]} onPress={() => alert(`Guardar grabación: ${tempRecordingName}`)}>
+            <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#69ff69' }]} onPress={() => separateAudio()}>
               <Text style={styles.buttonText}>GUARDAR</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#ff6969' }]} onPress={() => setModalVisible(false)}>
-              <Text style={styles.buttonText}>CANCELAR</Text>
+            <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#ff6969' }]} onPress={() => (saving ? null : setModalVisible(false))}>
+              {saving ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Text style={styles.buttonText}>CANCELAR</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -274,7 +315,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     width: Dimensions.get("window").width - 50,
-    height: Dimensions.get("window").height / 2,
+    height: Dimensions.get("window").height - 200,
     justifyContent: 'space-between',
     alignItems: 'center',
     borderColor: '#22668D',

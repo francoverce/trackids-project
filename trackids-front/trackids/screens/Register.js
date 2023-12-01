@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { ImageBackground, View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { ImageBackground, View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import background from '../assets/background4.png';
+import { Dimensions } from "react-native";
 
-const Register = ( navigation ) => {
+const Register = (navigation) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -36,34 +37,38 @@ const Register = ( navigation ) => {
   return (
     <View style={styles.container}>
       <ImageBackground source={background} resizeMode="cover" style={styles.bg}>
-        <Text style={styles.title}>Registro</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Correo electrónico"
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Nombre"
-          onChangeText={(text) => setUsername(text)}
-          value={username}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
-          secureTextEntry
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Confirmar Contraseña"
-          secureTextEntry
-          onChangeText={(text) => setConfirmPassword(text)}
-          value={confirmPassword}
-        />
-        <Button title="Registrarse" onPress={handleRegister} />
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>REGISTRO</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Correo electrónico"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Nombre"
+            onChangeText={(text) => setUsername(text)}
+            value={username}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Contraseña"
+            secureTextEntry
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Confirmar Contraseña"
+            secureTextEntry
+            onChangeText={(text) => setConfirmPassword(text)}
+            value={confirmPassword}
+          />
+          <TouchableOpacity style={styles.button} onPress={handleRegister}>
+            <Text style={styles.buttonText}>LISTO!</Text>
+          </TouchableOpacity>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -81,10 +86,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  formContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+  },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    fontFamily: "FugazOne",
+    fontSize: 36,
+    color: 'white',
+    textAlign: 'center',
+    margin: 20,
+    textShadowColor: 'black',  // Color del "borde"
+    textShadowOffset: { width: 1, height: 1 },  // Ajusta según sea necesario
+    textShadowRadius: 2,  // Ajusta según sea necesario
   },
   input: {
     width: '75%',
@@ -92,9 +109,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 30,
     marginBottom: 10,
     paddingLeft: 10,
+  },
+  button: {
+    backgroundColor: '#FFB633',
+    borderRadius: 30,
+    padding: 10,
+    margin: 20,
+    width: Dimensions.get("window").width - 100,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 10,
+    borderWidth: 3,
+    borderColor: '#22668D',
+  },
+  buttonText: {
+    fontFamily: "FugazOne",
+    fontSize: 18,
+    color: 'black',
+    textAlign: 'center',
   },
 });
 

@@ -22,117 +22,120 @@ const Library = ({ navigation }) => {
 
   const isFocused = useIsFocused();
 
-    useEffect(() => {
-        console.log("called");
- 
-        // Call only when screen open or when back on screen 
-        if(isFocused){ 
-            getSongs();
-            getProjects();
-        }
-    }, [isFocused]);
+  useEffect(() => {
+    console.log("called");
 
-    const getSongs = async () => {
-      // Puedes cargar las canciones de la manera que necesites aquí
-      const loadedSongs = [
-        {
-          id: 'feelgoodinc',
-          title: 'Feel Good Inc.',
-          artist: 'Gorillaz',
-          info: 'Esta canción fue grabada en bla bla bla por bla bla',
-          audioFiles: [
-            require('../assets/tracks/feelgoodinc/vocals.mp3'),
-            require('../assets/tracks/feelgoodinc/drums.mp3'),
-            require('../assets/tracks/feelgoodinc/bass.mp3'),
-            require('../assets/tracks/feelgoodinc/other.mp3'),
-          ],
-          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
-        },
-        {
-          id: 'feelgoodinc2',
-          title: 'Feel Good Inc.2',
-          artist: 'Gorillaz2',
-          info: 'Esta canción fue grabada en bla bla bla por bla bla2',
-          audioFiles: [
-            require('../assets/tracks/feelgoodinc/vocals.mp3'),
-            require('../assets/tracks/feelgoodinc/drums.mp3'),
-            require('../assets/tracks/feelgoodinc/bass.mp3'),
-            require('../assets/tracks/feelgoodinc/other.mp3'),
-          ],
-          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
-        },
-        {
-          id: 'feelgoodinc3',
-          title: 'Feel Good Inc.',
-          artist: 'Gorillaz',
-          info: 'Esta canción fue grabada en bla bla bla por bla bla',
-          audioFiles: [
-            require('../assets/tracks/feelgoodinc/vocals.mp3'),
-            require('../assets/tracks/feelgoodinc/drums.mp3'),
-            require('../assets/tracks/feelgoodinc/bass.mp3'),
-            require('../assets/tracks/feelgoodinc/other.mp3'),
-          ],
-          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
-        },
-        {
-          id: 'feelgoodinc4',
-          title: 'Feel Good Inc.',
-          artist: 'Gorillaz',
-          info: 'Esta canción fue grabada en bla bla bla por bla bla',
-          audioFiles: [
-            require('../assets/tracks/feelgoodinc/vocals.mp3'),
-            require('../assets/tracks/feelgoodinc/drums.mp3'),
-            require('../assets/tracks/feelgoodinc/bass.mp3'),
-            require('../assets/tracks/feelgoodinc/other.mp3'),
-          ],
-          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
-        },
-        {
-          id: 'feelgoodinc5',
-          title: 'Feel Good Inc.',
-          artist: 'Gorillaz',
-          info: 'Esta canción fue grabada en bla bla bla por bla bla',
-          audioFiles: [
-            require('../assets/tracks/feelgoodinc/vocals.mp3'),
-            require('../assets/tracks/feelgoodinc/drums.mp3'),
-            require('../assets/tracks/feelgoodinc/bass.mp3'),
-            require('../assets/tracks/feelgoodinc/other.mp3'),
-          ],
-          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
-        },
-        {
-          id: 'feelgoodinc6',
-          title: 'Feel Good Inc.',
-          artist: 'Gorillaz',
-          info: 'Esta canción fue grabada en bla bla bla por bla bla',
-          audioFiles: [
-            require('../assets/tracks/feelgoodinc/vocals.mp3'),
-            require('../assets/tracks/feelgoodinc/drums.mp3'),
-            require('../assets/tracks/feelgoodinc/bass.mp3'),
-            require('../assets/tracks/feelgoodinc/other.mp3'),
-          ],
-          imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
-        },
-        // Otras canciones...
-      ];
-      setSongs(loadedSongs);
-    };
+    // Call only when screen open or when back on screen 
+    if (isFocused) {
+      getSongs();
+      getProjects();
+    }
+  }, [isFocused]);
 
-    const getProjects = async () => {
-      try {
-        const response = await fetch('http://10.0.2.2:8000/AppTracKids/getProyectos', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-        });
-        const data = await response.json();
-        setProjects(data);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
+  const getSongs = async () => {
+    // Puedes cargar las canciones de la manera que necesites aquí
+    const loadedSongs = [
+      {
+        id: 'feelgoodinc',
+        title: 'Feel Good Inc.',
+        artist: 'Gorillaz',
+        info: 'Esta canción fue grabada en bla bla bla por bla bla',
+        audioFiles: [
+          require('../assets/tracks/feelgoodinc/vocals.mp3'),
+          require('../assets/tracks/feelgoodinc/drums.mp3'),
+          require('../assets/tracks/feelgoodinc/bass.mp3'),
+          require('../assets/tracks/feelgoodinc/other.mp3'),
+        ],
+        imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+      },
+      {
+        id: 'feelgoodinc2',
+        title: 'Feel Good Inc.2',
+        artist: 'Gorillaz2',
+        info: 'Esta canción fue grabada en bla bla bla por bla bla2',
+        audioFiles: [
+          require('../assets/tracks/feelgoodinc/vocals.mp3'),
+          require('../assets/tracks/feelgoodinc/drums.mp3'),
+          require('../assets/tracks/feelgoodinc/bass.mp3'),
+          require('../assets/tracks/feelgoodinc/other.mp3'),
+        ],
+        imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+      },
+      {
+        id: 'feelgoodinc3',
+        title: 'Feel Good Inc.',
+        artist: 'Gorillaz',
+        info: 'Esta canción fue grabada en bla bla bla por bla bla',
+        audioFiles: [
+          require('../assets/tracks/feelgoodinc/vocals.mp3'),
+          require('../assets/tracks/feelgoodinc/drums.mp3'),
+          require('../assets/tracks/feelgoodinc/bass.mp3'),
+          require('../assets/tracks/feelgoodinc/other.mp3'),
+        ],
+        imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+      },
+      {
+        id: 'feelgoodinc4',
+        title: 'Feel Good Inc.',
+        artist: 'Gorillaz',
+        info: 'Esta canción fue grabada en bla bla bla por bla bla',
+        audioFiles: [
+          require('../assets/tracks/feelgoodinc/vocals.mp3'),
+          require('../assets/tracks/feelgoodinc/drums.mp3'),
+          require('../assets/tracks/feelgoodinc/bass.mp3'),
+          require('../assets/tracks/feelgoodinc/other.mp3'),
+        ],
+        imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+      },
+      {
+        id: 'feelgoodinc5',
+        title: 'Feel Good Inc.',
+        artist: 'Gorillaz',
+        info: 'Esta canción fue grabada en bla bla bla por bla bla',
+        audioFiles: [
+          require('../assets/tracks/feelgoodinc/vocals.mp3'),
+          require('../assets/tracks/feelgoodinc/drums.mp3'),
+          require('../assets/tracks/feelgoodinc/bass.mp3'),
+          require('../assets/tracks/feelgoodinc/other.mp3'),
+        ],
+        imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+      },
+      {
+        id: 'feelgoodinc6',
+        title: 'Feel Good Inc.',
+        artist: 'Gorillaz',
+        info: 'Esta canción fue grabada en bla bla bla por bla bla',
+        audioFiles: [
+          require('../assets/tracks/feelgoodinc/vocals.mp3'),
+          require('../assets/tracks/feelgoodinc/drums.mp3'),
+          require('../assets/tracks/feelgoodinc/bass.mp3'),
+          require('../assets/tracks/feelgoodinc/other.mp3'),
+        ],
+        imagen: 'https://upload.wikimedia.org/wikipedia/en/d/df/Gorillaz_Demon_Days.PNG',
+      },
+      // Otras canciones...
+    ];
+    setSongs(loadedSongs);
+  };
+
+  const getProjects = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:8000/AppTracKids/getProyectos', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });
+      const data = await response.json();
+      // Obtén solo los últimos 6 proyectos
+      const last6Projects = data.slice(Math.max(data.length - 6, 0));
+
+      setProjects(last6Projects);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const currentList = category === 'trackids' ? songs : projects;
 
@@ -169,7 +172,6 @@ const Library = ({ navigation }) => {
       cover: item.imagen,
     });
   };
-
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
