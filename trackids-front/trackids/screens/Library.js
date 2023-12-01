@@ -127,13 +127,21 @@ const Library = ({ navigation }) => {
           'Authorization': `Bearer ${token}`
         },
       });
+  
       const data = await response.json();
-      // Obtén solo los últimos 6 proyectos
-      const last6Projects = data.slice(Math.max(data.length - 6, 0));
-
-      setProjects(last6Projects);
+  
+      // Verificar si hay un error en la respuesta
+      if (data.error) {
+        console.error('Error:', data.error);
+        // Manejar el error según tus necesidades
+      } else {
+        // Obtén solo los últimos 6 proyectos
+        const last6Projects = data.slice(Math.max(data.length - 6, 0));
+        setProjects(last6Projects);
+      }
     } catch (error) {
       console.error('Error:', error);
+      // Manejar otros errores, si es necesario
     }
   };
 

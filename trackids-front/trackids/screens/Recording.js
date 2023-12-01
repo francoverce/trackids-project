@@ -23,17 +23,39 @@ const Recording = ({ navigation }) => {
     FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
   });
 
+  const [username, setUsername] = useState('');
+
   const [recording, setRecording] = React.useState();
   const [recordings, setRecordings] = React.useState([]);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [tempRecordingName, setTempRecordingName] = useState('');
   const [recordingName, setRecordingName] = useState('');
   const [image, setImage] = useState(null);
 
   const [saving, setSaving] = useState(false);
 
   const [separatedTrack, setSeparatedTrack] = useState(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await fetch('http://10.0.2.2:8000/AppTracKids/getUsuario', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data', // Indica que estás enviando datos de formdata
+          },
+        });
+        const data = await response.json();
+        console.log(data)
+        // Continúa con el manejo de la respuesta según tus necesidades
+        setUsername(data.name);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    getUser();
+  }, [recording]);
 
   async function separateAudio() {
     try {
@@ -44,13 +66,12 @@ const Recording = ({ navigation }) => {
         type: 'audio/mpeg', // Ajusta el tipo de contenido según tu necesidad
         name: 'audio.mp3',
       });
-      formData.append('title', tempRecordingName);
+      formData.append('title', recordingName);
       formData.append('imagen', {
         uri: image,
         type: 'image/jpeg', // Ajusta el tipo de contenido según tu necesidad
         name: 'imagen.jpg',
       });
-      console.log(JSON.stringify(formData))
       const response = await fetch('http://10.0.2.2:8000/AppTracKids/obtenerSeparacionPorAudio', {
         method: 'POST',
         headers: {
@@ -60,7 +81,6 @@ const Recording = ({ navigation }) => {
         body: formData,
       });
       const data = await response.json();
-      console.log('Separation Data:', data);
       // Continúa con el manejo de la respuesta según tus necesidades
       setSeparatedTrack(data);
     } catch (error) {
@@ -81,8 +101,8 @@ const Recording = ({ navigation }) => {
     navigation.navigate('Tracklist', {
       song: {
         id: separatedTrack.id,
-        title: tempRecordingName,
-        artist: '',
+        title: recordingName,
+        artist: username,
         info: 'Esta es una grabación mía!',
       },
       cover: separatedTrack.imagen,
@@ -154,6 +174,7 @@ const Recording = ({ navigation }) => {
   };
 
   const RecordingModal = () => {
+    const [tempRecordingName, setTempRecordingName] = useState('');
     return (
       <Modal
         animationType="slide"
@@ -166,6 +187,11 @@ const Recording = ({ navigation }) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>GUARDAR PROYECTO</Text>
+            {!image &&
+              <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#696eff' }]} onPress={() => pickImage()}>
+                <Text style={styles.buttonText}>ELEGIR IMAGEN</Text>
+              </TouchableOpacity>
+            }
             <TextInput
               style={styles.input}
               placeholder="Nombre increíble para mi nuevo proyecto"
@@ -173,23 +199,19 @@ const Recording = ({ navigation }) => {
               onChangeText={(text) => setTempRecordingName(text)}
               onSubmitEditing={() => {
                 setRecordingName(tempRecordingName);
-                Keyboard.dismiss();
               }}
             />
-            <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#696eff' }]} onPress={() => pickImage()}>
-              <Text style={styles.buttonText}>ELEGIR IMAGEN</Text>
-            </TouchableOpacity>
-            {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+            {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
             <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#69ff69' }]} onPress={() => separateAudio()}>
               <Text style={styles.buttonText}>GUARDAR</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#ff6969' }]} onPress={() => (saving ? null : setModalVisible(false))}>
-              {saving ? (
-                <ActivityIndicator size="small" color="white" />
-              ) : (
+            {saving ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#ff6969' }]} onPress={() => (saving ? null : setModalVisible(false))}>
                 <Text style={styles.buttonText}>CANCELAR</Text>
-              )}
-            </TouchableOpacity>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </Modal>
@@ -208,8 +230,6 @@ const Recording = ({ navigation }) => {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
