@@ -17,7 +17,7 @@ import * as SecureStore from 'expo-secure-store';
 const Recording = ({ navigation }) => {
 
   const [token, setToken] = useState('');
-  SecureStore.getItemAsync("token").then((token) => setToken(token));
+  /* SecureStore.getItemAsync("token").then((token) => setToken(token)); */
 
   const [fontLoaded] = useFonts({
     FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
@@ -37,25 +37,34 @@ const Recording = ({ navigation }) => {
   const [separatedTrack, setSeparatedTrack] = useState(null);
 
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const response = await fetch('http://10.0.2.2:8000/AppTracKids/getUsuario', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data', // Indica que estás enviando datos de formdata
-          },
-        });
-        const data = await response.json();
-        console.log(data)
-        // Continúa con el manejo de la respuesta según tus necesidades
-        setUsername(data.name);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
-    getUser();
+
+    const fetchToken = async () => {
+      const storedToken = await SecureStore.getItemAsync("token");
+      setToken(storedToken);
+      // Llamar a getSongs y getProjects después de obtener el token
+      await getUser(storedToken);
+    };
+
+    fetchToken();
   }, [recording]);
+
+  const getUser = async (storedToken) => {
+    try {
+      const response = await fetch('http://10.0.2.2:8000/AppTracKids/getUsuario', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${storedToken}`,
+          'Content-Type': 'multipart/form-data', // Indica que estás enviando datos de formdata
+        },
+      });
+      const data = await response.json();
+      console.log(data)
+      // Continúa con el manejo de la respuesta según tus necesidades
+      setUsername(data.name);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   async function separateAudio() {
     try {
@@ -187,11 +196,6 @@ const Recording = ({ navigation }) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>GUARDAR PROYECTO</Text>
-            {!image &&
-              <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#696eff' }]} onPress={() => pickImage()}>
-                <Text style={styles.buttonText}>ELEGIR IMAGEN</Text>
-              </TouchableOpacity>
-            }
             <TextInput
               style={styles.input}
               placeholder="Nombre increíble para mi nuevo proyecto"
@@ -201,6 +205,11 @@ const Recording = ({ navigation }) => {
                 setRecordingName(tempRecordingName);
               }}
             />
+            {!image &&
+              <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#696eff' }]} onPress={() => pickImage()}>
+                <Text style={styles.buttonText}>ELEGIR IMAGEN</Text>
+              </TouchableOpacity>
+            }
             {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
             <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#69ff69' }]} onPress={() => separateAudio()}>
               <Text style={styles.buttonText}>GUARDAR</Text>
