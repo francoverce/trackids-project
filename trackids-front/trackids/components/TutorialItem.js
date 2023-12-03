@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TutorialItem; // Exporta el componente de esta manera
+export default TutorialItem;

@@ -38,6 +38,10 @@ const Tracklist = ({ route, navigation }) => {
 
     const [IsModalVisible, setIsModalVisible] = useState(false);
 
+/*     useEffect(() => {
+        loadSounds();
+    }, []); */
+
     const loadSounds = async () => {
         const loadedSounds = await Promise.all(audioFiles.map(file => Audio.Sound.createAsync({ uri: file })));
         setSounds(loadedSounds);
@@ -47,32 +51,42 @@ const Tracklist = ({ route, navigation }) => {
     };
 
     useEffect(() => {
-        loadSounds();
-    }, []);
+        // Crear y asignar referencias a los sonidos al cargar el componente
+        audioFiles.forEach(async (file) => {
+            const { sound } = await Audio.Sound.createAsync(file);
+            console.log("Sonido cargado:", sound);
+            soundObjects.current.push(sound);
+        });
+
+        return () => {
+            // Limpiar y descargar los recursos de audio al desmontar el componente
+            soundObjects.current.forEach(async (sound) => {
+                await sound.unloadAsync();
+                console.log("Sonido descargado.");
+            });
+        };
+    }, []); // Vacío, para que se ejecute solo una vez al montar el componente
 
     const handlePlayPress = async () => {
         if (!isPlaying) {
             const soundObjs = [];
-            for (let i = 0; i < sounds.length; i++) {
-                const { sound } = sounds[i];
-                const status = await sound.getStatusAsync();
-                if (status.isLoaded) {
-                    if (status.isPlaying) {
-                        await sound.pauseAsync();
-                    } else {
-                        await sound.playAsync();
-                    }
+    
+            try {
+                // Cargar todos los sonidos simultáneamente
+                const loadedSounds = await Promise.all(audioFiles.map(file => Audio.Sound.createAsync({ uri: file })));
+    
+                // Reproducir todos los sonidos simultáneamente
+                for (let i = 0; i < loadedSounds.length; i++) {
+                    const { sound } = loadedSounds[i];
                     soundObjs.push(sound);
+                    await sound.playAsync();
+                    sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
                 }
+    
+                soundObjects.current = soundObjs;
+            } catch (error) {
+                console.error('Error al cargar o reproducir sonidos:', error);
             }
-
-            for (let i = 0; i < sounds.length; i++) {
-                const { sound } = sounds[i];
-                sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate); // Aquí se asigna el listener
-            }
-
-            soundObjects.current = soundObjs; // Actualizar las referencias en soundObjects
-
         } else {
             soundObjects.current.forEach(async (sound) => {
                 await sound.pauseAsync();
@@ -80,15 +94,16 @@ const Tracklist = ({ route, navigation }) => {
         }
         setIsPlaying(!isPlaying);
     };
+    
 
-
-    // Nueva función para manejar las actualizaciones de estado de reproducción
     const onPlaybackStatusUpdate = async (status) => {
         if (!status.isLoaded) return;
 
         if (status.didJustFinish) {
-            setIsPlaying(false); // Cambiar el estado de reproducción
-            loadSounds();
+            setIsPlaying(false);
+            soundObjects.current.forEach(async (sound) => {
+                await sound.unloadAsync();
+            });
         }
     };
 
@@ -101,21 +116,6 @@ const Tracklist = ({ route, navigation }) => {
             setVolumeValues(newVolumeValues);
         }
     };
-
-    useEffect(() => {
-        // Crear y asignar referencias a los sonidos al cargar el componente
-        audioFiles.forEach(async (file) => {
-            const { sound } = await Audio.Sound.createAsync(file);
-            soundObjects.current.push(sound);
-        });
-
-        return () => {
-            // Limpiar y descargar los recursos de audio al desmontar el componente
-            soundObjects.current.forEach(async (sound) => {
-                await sound.unloadAsync();
-            });
-        };
-    }, []); // Vacío, para que se ejecute solo una vez al montar el componente
 
     const mostrarModal = () => {
         setIsModalVisible(true);
@@ -167,6 +167,7 @@ const Tracklist = ({ route, navigation }) => {
                 ))}
                 <Modal style={{ alignItems: 'center' }} isVisible={IsModalVisible} onBackdropPress={() => cerrarModal()}>
                     <View style={styles.modalContainer}>
+                        <Image source={infoIcon} style={[styles.infoIcon, { marginBottom: 20 }]} />
                         <Text style={styles.modalText}>{song.info}</Text>
                     </View>
                 </Modal>

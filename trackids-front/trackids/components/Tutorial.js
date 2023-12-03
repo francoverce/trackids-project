@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
 import TutorialItem from "./TutorialItem";
 import slides from "../assets/slides";
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Tutorial; // Exporta el componente de esta manera
+export default Tutorial;
