@@ -22,6 +22,15 @@ const Tracklist = ({ route, navigation }) => {
         FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
     });
 
+    // Agrega un manejador global de errores para capturar y manejar errores no manejados
+    global.ErrorUtils.setGlobalHandler((error, isFatal) => {
+        // Puedes registrar el error aquí o simplemente evitar que se cierre la aplicación en un error fatal
+        if (isFatal) {
+            console.error(error); // Imprime el error en la consola
+            // También puedes realizar acciones adicionales, como enviar el error a un servicio de registro
+        }
+    });
+
     const { song, audioFiles, cover } = route.params;
 
     const [sounds, setSounds] = useState([]);
@@ -38,9 +47,9 @@ const Tracklist = ({ route, navigation }) => {
 
     const [IsModalVisible, setIsModalVisible] = useState(false);
 
-/*     useEffect(() => {
-        loadSounds();
-    }, []); */
+    /*     useEffect(() => {
+            loadSounds();
+        }, []); */
 
     const loadSounds = async () => {
         const loadedSounds = await Promise.all(audioFiles.map(file => Audio.Sound.createAsync({ uri: file })));
@@ -70,11 +79,11 @@ const Tracklist = ({ route, navigation }) => {
     const handlePlayPress = async () => {
         if (!isPlaying) {
             const soundObjs = [];
-    
+
             try {
                 // Cargar todos los sonidos simultáneamente
                 const loadedSounds = await Promise.all(audioFiles.map(file => Audio.Sound.createAsync({ uri: file })));
-    
+
                 // Reproducir todos los sonidos simultáneamente
                 for (let i = 0; i < loadedSounds.length; i++) {
                     const { sound } = loadedSounds[i];
@@ -82,7 +91,7 @@ const Tracklist = ({ route, navigation }) => {
                     await sound.playAsync();
                     sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
                 }
-    
+
                 soundObjects.current = soundObjs;
             } catch (error) {
                 console.error('Error al cargar o reproducir sonidos:', error);
@@ -94,7 +103,7 @@ const Tracklist = ({ route, navigation }) => {
         }
         setIsPlaying(!isPlaying);
     };
-    
+
 
     const onPlaybackStatusUpdate = async (status) => {
         if (!status.isLoaded) return;

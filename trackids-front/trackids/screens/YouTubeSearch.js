@@ -18,7 +18,8 @@ const YouTubeSearch = ({ navigation }) => {
         FugazOne: require('../assets/fonts/FugazOne-Regular.ttf'),
     });
 
-    const [text, onChangeText] = React.useState('https://www.youtube.com/watch?v=BuW1SqwH_g0');
+    const [text, onChangeText] = React.useState('');
+    /* https://www.youtube.com/watch?v=OKEPiUh1iqM */
 
     const [songId, setSongId] = useState('')
     const [songName, setSongName] = useState('');

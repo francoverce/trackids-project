@@ -183,7 +183,7 @@ const Recording = ({ navigation }) => {
   };
 
   const RecordingModal = () => {
-    const [tempRecordingName, setTempRecordingName] = useState('');
+    const [tempRecordingName, setTempRecordingName] = useState(recordingName);
     return (
       <Modal
         animationType="slide"
@@ -215,7 +215,7 @@ const Recording = ({ navigation }) => {
               <Text style={styles.buttonText}>GUARDAR</Text>
             </TouchableOpacity>
             {saving ? (
-              <ActivityIndicator size="small" color="white" />
+              <ActivityIndicator size="large" color="blue" />
             ) : (
               <TouchableOpacity style={[styles.modalButton, { backgroundColor: '#ff6969' }]} onPress={() => (saving ? null : setModalVisible(false))}>
                 <Text style={styles.buttonText}>CANCELAR</Text>

@@ -3,7 +3,7 @@ import { ImageBackground, View, Text, TextInput, Button, StyleSheet, TouchableOp
 import background from '../assets/background4.png';
 import { Dimensions } from "react-native";
 
-const Register = (navigation) => {
+const Register = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
